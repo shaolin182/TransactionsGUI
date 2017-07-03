@@ -1,0 +1,42 @@
+<md-dialog aria-label="{{dialogTitle}}" class="categorydialog">
+	<form ng-cloak>
+		
+		<md-toolbar>
+			<div class="md-toolbar-tools">
+				<h2>{{dialogTitle}}</h2>
+				<span flex></span>
+				<md-button class="md-icon-button" ng-click="closeDialog()">
+					<md-icon aria-label="Close dialog">close</md-icon>
+				</md-button>
+			</div>
+		</md-toolbar>
+
+		<md-dialog-content>
+			<div class="md-dialog-content">
+				<md-autocomplete md-no-cache="true" md-items="parent in querySearch(searchParentText, parents)" md-item-text="parent.display" md-search-text="searchParentText" md-min-length="0" placeholder="{{placeHolderParent}}" md-clear-button="true" md-selected-item-change="selectedItemChange(parent)">
+					<md-item-template>{{parent.display}}</md-item-template>
+				</md-autocomplete>
+			</div>
+
+			<div class="md-dialog-content">
+				<md-autocomplete md-no-cache="true" md-items="child in querySearch(searchChildText, childs)" md-item-text="child.display" md-search-text="searchChildText" md-min-length="0" placeholder="{{placeHolderChild}}" md-clear-button="true">
+					<md-item-template>{{child.display}}</md-item-template>
+				</md-autocomplete>
+			</div>
+		</md-dialog-content>
+
+		<md-dialog-actions layout="row">
+
+			<span flex></span>
+			<md-button ng-click="closeDialog()">
+				Cancel
+			</md-button>
+			<md-button ng-click="okDialog()">
+				Ok
+			</md-button>
+		</md-dialog-actions>
+
+	</form>
+</md-dialog>
+
+
