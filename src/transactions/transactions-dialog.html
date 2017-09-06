@@ -1,0 +1,156 @@
+<md-dialog aria-label="Add a new transaction" class="dialogTransaction">
+
+	<form>
+		<md-toolbar>
+			<div class="md-toolbar-tools">
+				<h2>Add a new transaction</h2>
+				<span flex></span>
+				<md-button class="md-icon-button" ng-click="ctrl.closeDialog()">
+					<md-icon aria-label="Close dialog">close</md-icon>
+				</md-button>
+			</div>
+		</md-toolbar>
+
+		<md-dialog-content layout="column" >
+
+			<div layout="row">
+				<md-input-container>
+					<label>Enter Date</label>
+					<md-datepicker ng-model="transaction.date" md-hide-icons="calendar"></md-datepicker>
+				</md-input-container>
+				<div flex >
+				</div>
+				<md-input-container>
+					<md-checkbox ng-model="transaction.multi" aria-label="Multi category" ng-change="ctrl.onMultiChange()">
+						Multi category
+					</md-checkbox>
+				</md-input-container>
+
+			</div>
+
+			<div layout="row">
+				<md-input-container  flex > 
+					<label>Description</label>
+					<input ng-model="transaction.label" />
+				</md-input-container>
+			</div>
+
+			<div layout="row" ng-if="!transaction.multi">
+
+				<md-input-container flex="45" >
+					<label>Select a category</label>
+					<md-select ng-model="transaction.category" ng-model-options="{trackBy: '$value.id'}" multiple="false" >
+						<md-optgroup label="{{currentParent}}" ng-repeat="currentParent in categories.type">
+							<md-option  ng-value="category" ng-repeat="category in categories | filter: {category: currentParent}">{{category.label}}</md-option>
+						</md-optgroup>
+					</md-select>
+					<div class="md-errors-spacer"></div>
+				</md-input-container>
+
+				<div flex>
+
+				</div >				
+				<md-input-container flex="45">
+					<label>Select a bank account</label>
+					<md-select ng-model="transaction.bankaccount"  ng-model-options="{trackBy: '$value.id'}" >
+						<md-optgroup label="{{currentType}}" ng-repeat="currentType in bankaccountList.type">
+							<md-option  ng-value="bankaccount" ng-repeat="bankaccount in bankaccountList | filter: {category: currentType}">{{bankaccount.label}}</md-option>
+						</md-optgroup>
+					</md-select>
+					<div class="md-errors-spacer"></div>
+				</md-input-container>
+
+			</div>
+
+			<div layout="row" ng-if="transaction.multi">
+
+				<md-input-container flex="45">
+					<label>Select a bank account</label>
+					<md-select ng-model="transaction.bankaccount"  ng-model-options="{trackBy: '$value.id'}" >
+						<md-optgroup label="{{currentType}}" ng-repeat="currentType in bankaccountList.type">
+							<md-option  ng-value="bankaccount" ng-repeat="bankaccount in bankaccountList | filter: {category: currentType}">{{bankaccount.label}}</md-option>
+						</md-optgroup>
+					</md-select>
+					<div class="md-errors-spacer"></div>
+				</md-input-container>
+
+			</div>
+
+			<div layout="row">
+
+				<md-input-container flex="45">
+					<label>Income</label>
+					<input ng-model="transaction.income" type="number">
+				</md-input-container>
+
+				<div flex ></div>
+
+				<md-input-container flex="45">
+					<label>Outcome</label>
+					<input ng-model="transaction.outcome" type="number">
+				</md-input-container>
+
+			</div>
+
+			<div ng-if="transaction.multi" class="SubTransaction">
+				<md-table-container >
+					<table md-table  md-row-select multiple ng-model="subTransactionSelected">
+						<thead md-head>
+							<tr md-row>
+								<th md-column md-order-by="category" width="40%">Category</th>
+								<th md-column md-order-by="income">Income</th>
+								<th md-column md-order-by="outcome">Outcome</th>
+							</tr>
+						</thead>
+						<tbody md-body >
+							<tr md-select="subtransaction" ng-repeat="subtransaction in transaction.subtransaction">
+
+								<!-- Date --> 
+								<td md-cell>
+									<md-select ng-model="subtransaction.category" ng-model-options="{trackBy: '$value.id'}" multiple="false" placeholder="Select a category"  >
+										<md-optgroup label="{{currentParent}}" ng-repeat="currentParent in categories.type">
+											<md-option  ng-value="category" ng-repeat="category in categories | filter: {category: currentParent}">{{category.label}}</md-option>
+										</md-optgroup>
+									</md-select>
+								</td>
+
+								<td md-cell>
+									<input ng-model="subtransaction.income" type="number">
+								</td>
+
+								<td md-cell>
+									<input ng-model="subtransaction.outcome" type="number">
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</md-table-container>
+				<div layout="row" layout-align="end center">
+					<!-- Add Button -->
+					<md-button class="md-icon-button" ng-click="ctrl.addSubTransaction()">
+						<md-icon>add</md-icon>
+					</md-button>
+					<!-- Delete Button -->
+					<md-button class="md-icon-button" ng-click="ctrl.removeSubTransaction()">
+						<md-icon>delete</md-icon>
+					</md-button>
+				</div>
+			</div>
+
+		</md-dialog-content>
+
+		<md-dialog-actions layout="row" class="FooterAction">
+			<md-button ng-click="ctrl.addDialog()">
+				Add
+			</md-button>
+			<span flex="80"></span>
+			<md-button ng-click="ctrl.closeDialog()">
+				Cancel
+			</md-button>
+			<md-button ng-click="ctrl.okDialog()">
+				Done
+			</md-button>
+		</md-dialog-actions>
+	</form>
+
+</md-dialog>

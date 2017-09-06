@@ -5,12 +5,17 @@ transactionsController.controller('TransactionsCtrl', ['$scope', 'Transactions',
 
 	var self = this;
 
+	/**
+	* If true, data table  is editable.
+	*/
+	$scope.editTable = false;
+
 	/*
 	* Default configuration about sorting and pagination, used in md-datatable directive
 	*/
 	$scope.query = {
 		order: 'dateToDisplay', // default order
-		limit: 10, // default page size
+		limit: 20, // default page size
 		page: 1,  // default page
 		query:[5, 10, 20, 50, 100] // pagination limit
 	};
@@ -22,22 +27,36 @@ transactionsController.controller('TransactionsCtrl', ['$scope', 'Transactions',
 	$scope.itemSelected = [];
 
 	/*
-	* Load all transactions
+	* Load all transactions and then encapsulate each row returned in an item object
+	* Item object contains specific property about it should be displayed
 	*/ 
-	$scope.transactions = Transactions.query(function () {
-		$scope.transactions.forEach(function (currentElement) {
+	self.loadTransactions = function () {
+		var resultItem = [];
+		Transactions.query(function (results) {
+			results.forEach(function (currentElement) {
 
-			// encapsulate into a row item
-			var item = self.encapsulateTransaction(currentElement);
-			$scope.items.push(item);
+				// encapsulate into a row item
+				var item = self.encapsulateTransaction(currentElement);
+				resultItem.push(item);
+			});
 		});
-	});
+
+		return resultItem;
+	}
+
+
+	// Load all transactions
+	$scope.items = self.loadTransactions();
 
 	// Load categories list
 	$scope.categories = Categories.getCategories();
 
 	// Load Bank Account list
 	$scope.bankaccountList = BankAccount.getBankAccount();
+
+	$scope.bankAccountTotal = BankAccount.getBankAccountTotal();
+
+	$scope.bankAccountTotalByCategory = BankAccount.getBankAccountTotalByCategory();
 
 	/**
 	* Create and return a new transaction object with default value
@@ -210,4 +229,21 @@ transactionsController.controller('TransactionsCtrl', ['$scope', 'Transactions',
 			console.log('You cancelled the dialog.');
 		});
 	};
+
+	self.addTransaction = function(ev) {
+
+		$mdDialog.show({
+			controller: 'TransactionsDialogCtrl',
+			templateUrl: '../transactions/transactions-dialog.html',
+			targetEvent: ev,
+			controllerAs: 'ctrl',
+			clickOutsideToClose:true,
+		})
+		.then(function(bankAccountAdded) {
+			$scope.items = self.loadTransactions();
+		}, function() {
+			console.log('You cancelled the dialog.');
+		});
+
+	}
 }])

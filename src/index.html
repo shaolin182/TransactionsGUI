@@ -8,6 +8,7 @@
 	<!-- style sheet -->
 	<link href="bower_components/angular-material-data-table/dist/md-data-table.css" rel="stylesheet" type="text/css"/>
 	<link href="bower_components/angular-material/angular-material.css" rel="stylesheet" type="text/css"/>
+
 	<link href="css/transactions.css" rel="stylesheet" type="text/css"/>
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
@@ -25,6 +26,7 @@
 	<!-- Application script -->
 	<script src="app.js"></script>
 	<script src="transactions/transactions-controller.js"></script>
+	<script src="transactions/transactions-dialog-controller.js"></script>
 	<script src="transactions/transactions-service.js"></script>
 	<script src="dialog/dialog-controller.js"></script>
 	<script src="categories/categories-service.js"></script>
@@ -32,16 +34,16 @@
 
 </head>
 
-<body ng-app="transactions">
+<body ng-app="transactions" layout="column">
 
-	<md-toolbar>
+	<md-toolbar layout="row">
 		<div class="md-toolbar-tools">
 			<div class="md-title">Gestion de comptes</div>
 		</div>
 	</md-toolbar>
 
-	<md-content laout="column">
-		<div ng-view></div>
+	<md-content flex layout="column" class="mainContent">
+		<div ng-view flex></div>
 	</md-content>
 
 </body>

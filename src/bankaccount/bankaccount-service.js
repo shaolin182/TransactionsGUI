@@ -5,7 +5,10 @@ function bankaccountService($resource) {
 	var bankaccountService = {};
 
 	bankaccountService.getResource = function () {
-		return $resource('http://localhost:8080/bankaccount');
+		return $resource('http://localhost:8080/bankaccount', null, {
+			total: {method:'GET', url:'http://localhost:8080/bankaccount/total', isArray:true}, 
+			totalByCategory : {method:'GET', url:'http://localhost:8080/bankaccount/totalCategory', isArray:true}, 
+		});
 	}
 
 	bankaccountService.getBankAccount = function () {
@@ -19,6 +22,14 @@ function bankaccountService($resource) {
 		});
 
 		return bankAccount;
+	}
+
+	bankaccountService.getBankAccountTotal = function () {
+		return bankaccountService.getResource().total();
+	}
+
+	bankaccountService.getBankAccountTotalByCategory = function () {
+		return bankaccountService.getResource().totalByCategory();
 	}
 
 	return bankaccountService;

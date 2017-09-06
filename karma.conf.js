@@ -31,7 +31,8 @@ module.exports = function(config) {
     'src/dialog/dialog-controller.js',
     'src/categories/categories-service.js',
     'src/bankaccount/bankaccount-service.js', 
-    'src/transactions/transactions-controller-test.js'
+    'src/transactions/transactions-controller-test.js',
+    'src/transactions/transactions-dialog-controller.js'
     ],
 
 

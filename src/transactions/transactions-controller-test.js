@@ -30,7 +30,7 @@ describe('TransactionsCtrl', function(){
 
 		var mockCategories = sinon.stub({getCategories : function() {}});
 
-		var mockBankAccount = sinon.stub({getBankAccount : function () {}});
+		var mockBankAccount = sinon.stub({getBankAccount : function () {}, getBankAccountTotal : function() {}, getBankAccountTotalByCategory : function() {}});
 
 		ctrl = $controller('TransactionsCtrl', {
 			$scope: $scope, 
@@ -143,7 +143,7 @@ describe('TransactionsCtrl', function(){
 			assert.deepEqual({id:2}, mockTransaction.remove.getCall(0).args[0], '1st Call should delete element with id 2');
 			assert.deepEqual({id:5}, mockTransaction.remove.getCall(1).args[0], '2nd Call should delete element with id 5');
 			assert.deepEqual({id:6}, mockTransaction.remove.getCall(2).args[0], '3rd Call should delete element with id 6');
-			assert.empty(0, $scope.itemSelected.length, 'selected item should be empty');
+			assert.equal(0, $scope.itemSelected.length, 'selected item should be empty');
 			done();
 
 

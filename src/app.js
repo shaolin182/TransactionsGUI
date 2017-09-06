@@ -6,7 +6,7 @@
  */
  var transactionsApp = angular
  .module('transactions', [
- 	'ngRoute', 'transactionsController', 'dialogController', 'transactionsServiceModule', 'ngMaterial', 'md.data.table', 'categoriesServiceModule', 'bankaccountServiceModule', 'angularMoment'
+ 	'ngRoute', 'transactionsController', 'dialogController', 'transactionsDialogController', 'transactionsServiceModule', 'ngMaterial', 'md.data.table', 'categoriesServiceModule', 'bankaccountServiceModule', 'angularMoment'
  	]);
 
 

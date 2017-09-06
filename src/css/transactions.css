@@ -13,16 +13,74 @@ input:focus {
 	margin-bottom: 0;
 }
 
-.md-datepicker-input-container {
-	border-width: 0 0 0 0;
-	font-size: 20px;
-}
-
-.md-datepicker-input {
-	font-size: 13px;
-}
-
-md-dialog .md-dialog-content {
+.dialogAdmin {
 	min-width: 300px;
-	padding: 12px;
+}
+
+.mainContent {
+	padding-left: 2%;
+	padding-right: 2%;
+}
+
+.bankAccountCard {
+	padding: 5px;
+	flex: auto;
+}
+
+.redNumber {
+	color: red;
+}
+
+.greenNumber {
+	color: green;
+}
+
+/*
+* Main class for transaction popup
+* - Default width 
+*/
+.dialogTransaction {
+	min-width: 700px;
+}
+
+/*
+* Force same height for input container as by default, md-select and input does not have same height
+*/
+.dialogTransaction md-input-container .md-errors-spacer {
+	min-height: 0;
+}
+
+/*
+* Reduce padding for md-datatable in order to align it with form input in popup
+*/
+.dialogTransaction table.md-table.md-row-select td.md-cell:first-child,
+.dialogTransaction table.md-table.md-row-select th.md-column:first-child {
+	padding: 5px 10px;
+}
+
+/*
+* REduce height of orw for md-datatable
+*/
+.transactionTable table.md-table tbody.md-body > tr.md-row,
+table.md-table tfoot.md-foot > tr.md-row {
+	height: 30px;
+}
+
+/*
+* Add a top border in popup Transaction for delimiting action button and form
+*/
+.FooterAction {
+	border-top: 1px;
+	border-top-style: solid;
+	border-top-color: rgba(0, 0, 0, 0.1);
+}
+
+.SubTransaction {
+	border-style: solid;
+	border-width: 1px;
+	border-color: rgba(0, 0, 0, 0.2);
+}
+
+.dialogTransaction md-dialog-content {
+	padding: 30px;
 }
