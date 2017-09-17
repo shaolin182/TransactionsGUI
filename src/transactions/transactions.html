@@ -20,7 +20,7 @@
 <md-card layout="column" class="transactionTable">
 	<!-- Action Toolbar -->
 	<md-toolbar class="md-table-toolbar md-default" >
-		<div class="md-toolbar-tools">
+		<div class="md-toolbar-tools" layout="row">
 			<span>Transactions</span>
 			<span flex></span>
 			<!-- Add Button -->
@@ -31,10 +31,17 @@
 			<md-button class="md-icon-button" ng-click="ctrl.deleteTransaction()">
 				<md-icon>delete</md-icon>
 			</md-button>
-			<!-- Filter Button -->
-			<md-button class="md-icon-button">
-				<md-icon>filter_list</md-icon>
-			</md-button>
+
+			<!-- filter -->
+			<div layout="row" style="">
+				<md-button class="md-icon-button" ng-click="showFilter = !showFilter">		
+					<md-icon class="material-icons">search</md-icon>
+				</md-button>
+				<form  name="filter.form" style="padding-top: 6px;" ng-show="showFilter">
+					<input class="searchText" ng-model="query.filter" placeholder="search"  aria-invalid="false" type="text">
+				</form>
+			</div>
+
 
 			<!-- Menu -->
 			<md-menu md-position-mode="target-right target">
@@ -57,7 +64,7 @@
 			</md-menu>
 		</div>
 	</md-toolbar>
-	
+
 	<md-table-container>
 		<table md-table md-row-select multiple ng-model="itemSelected" md-progress="transactions" >
 
@@ -76,7 +83,7 @@
 
 			<!-- Table content -->
 			<tbody md-body >
-				<tr md-row md-select="item" md-select-id="item.transaction._id" ng-repeat="item in items | orderBy : query.order | limitTo: query.limit : (query.page - 1) * query.limit">
+				<tr md-row md-select="item" md-select-id="item.transaction._id" ng-repeat="item in items | orderBy : query.order | filter : query.filter | limitTo: query.limit : (query.page - 1) * query.limit ">
 
 					<!-- Date --> 
 					<td md-cell>
@@ -131,6 +138,6 @@
 
 
 	<!-- Pagination -->
-	<md-table-pagination md-limit="query.limit" md-page="query.page" md-limit-options="query.query" md-page-select md-total="{{items.length}}">
+	<md-table-pagination md-limit="query.limit" md-page="query.page" md-limit-options="query.query" md-page-select md-total="{{(items | filter : query.filter).length}}">
 	</md-table-pagination>
 </md-card>

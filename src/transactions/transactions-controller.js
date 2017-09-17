@@ -14,7 +14,7 @@ transactionsController.controller('TransactionsCtrl', ['$scope', 'Transactions',
 	* Default configuration about sorting and pagination, used in md-datatable directive
 	*/
 	$scope.query = {
-		order: 'dateToDisplay', // default order
+		order: '-dateToDisplay', // default order
 		limit: 20, // default page size
 		page: 1,  // default page
 		query:[5, 10, 20, 50, 100] // pagination limit
@@ -25,6 +25,7 @@ transactionsController.controller('TransactionsCtrl', ['$scope', 'Transactions',
 	*/
 	$scope.items = [];
 	$scope.itemSelected = [];
+	$scope.showFilter = false;
 
 	/*
 	* Load all transactions and then encapsulate each row returned in an item object
