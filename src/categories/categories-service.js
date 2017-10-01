@@ -4,20 +4,28 @@ function categoriesService($resource) {
 
 	var categoriesService = {};
 
+	/**
+	* Global variables containing all categories
+	*/ 
+	var categories;
+
 	categoriesService.getResource = function () {
 		return $resource('http://localhost:8080/categories');
 	}
 
 	categoriesService.getCategories = function () {
-		var categories = categoriesService.getResource().query( function () {
-			categories.type = categories.reduce(function(previous, current) {
-				if (previous.indexOf(current.category) === -1) {
-					previous.push(current.category);
-				}
+		if (categories == undefined) {
+			categories = categoriesService.getResource().query( function () {
+				categories.type = categories.reduce(function(previous, current) {
+					if (previous.indexOf(current.category) === -1) {
+						previous.push(current.category);
+					}
 
-				return previous;
-			}, []);
-		});
+					return previous;
+				}, []);
+			});	
+		}
+		
 
 		return categories;
 	}

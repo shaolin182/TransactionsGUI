@@ -4,6 +4,11 @@ function bankaccountService($resource) {
 
 	var bankaccountService = {};
 
+	/**
+	* Global variable that contains all bank account
+	*/ 
+	var bankAccount;
+
 	bankaccountService.getResource = function () {
 		return $resource('http://localhost:8080/bankaccount', null, {
 			total: {method:'GET', url:'http://localhost:8080/bankaccount/total', isArray:true}, 
@@ -12,14 +17,16 @@ function bankaccountService($resource) {
 	}
 
 	bankaccountService.getBankAccount = function () {
-		var bankAccount = bankaccountService.getResource().query(function () {
-			bankAccount.type = bankAccount.reduce(function (previous, current) {
-				if (previous.indexOf(current.category) === -1) {
-					previous.push(current.category);
-				}
-				return previous
-			}, []);
-		});
+		if (bankAccount == undefined) {
+			bankAccount = bankaccountService.getResource().query(function () {
+				bankAccount.type = bankAccount.reduce(function (previous, current) {
+					if (previous.indexOf(current.category) === -1) {
+						previous.push(current.category);
+					}
+					return previous
+				}, []);
+			});
+		}
 
 		return bankAccount;
 	}
