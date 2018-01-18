@@ -1,6 +1,6 @@
 'use strict';
 
-var transactionsController = angular.module('transactionsController', []);
+var transactionsController = angular.module('transactionsController', ['ngMaterial']);
 transactionsController.controller('TransactionsCtrl', ['$scope', 'Transactions', 'Categories', 'BankAccount', '$mdDialog', function ($scope, Transactions, Categories, BankAccount, $mdDialog) {
 
 	var self = this;
