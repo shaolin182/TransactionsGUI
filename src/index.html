@@ -11,6 +11,7 @@
 
 	<link href="css/transactions.css" rel="stylesheet" type="text/css"/>
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 	<!-- Bower modules scripts -->
 	<script src="bower_components/angular/angular.js"></script>
@@ -22,6 +23,9 @@
 	<script src="bower_components/angular-aria/angular-aria.min.js"></script>
 	<script src="bower_components/moment/moment.js"></script>
 	<script src="bower_components/angular-moment/angular-moment.js"></script>
+	<script src="bower_components/chart.js/dist/Chart.js"></script>
+	<script src="bower_components/angular-chart.js/dist/angular-chart.min.js"></script>
+
 
 	<!-- Application script -->
 	<script src="app.js"></script>
@@ -30,19 +34,47 @@
 	<script src="transactions/transactions-service.js"></script>
 	<script src="dialog/dialog-controller.js"></script>
 	<script src="categories/categories-service.js"></script>
+	<script src="main-controller.js"></script>
 	<script src="bankaccount/bankaccount-service.js"></script>
+	<script src="stats/stats-controller.js"></script>
+	<script src="stats/stats-service.js"></script>
 
 </head>
 
-<body ng-app="transactions" layout="column">
+<body ng-app="transactions" layout="column" ng-controller="MainCtrl as ctrl">
 
 	<md-toolbar layout="row">
 		<div class="md-toolbar-tools">
-			<div class="md-title">Gestion de comptes</div>
-		</div>
+			<md-button class="md-icon-button " aria-label="Close Side Panel" ng-click="ctrl.closeOrOpenSidePanel()">
+				<md-tooltip>Close Side Panel</md-tooltip>
+				<md-icon>dehaze</md-icon>
+			</md-button>
+			<div>
+				Gestion de comptes
+			</div>
+		</div>		
 	</md-toolbar>
 
-	<md-content flex layout="column" class="mainContent">
+	<md-content flex layout="row">
+		<md-sidenav class="md-sidenav-left" md-component-id="left" 	 md-whiteframe="4" md-is-locked-open="sideOpen">
+			<md-content >
+				<div layout="column">
+					<md-list>
+						<md-list-item ng-click="ctrl.goToPage('/')">
+							<md-icon>euro_symbol</md-icon>
+							<p>Transactions</p>
+						</md-list-item>
+						<md-list-item ng-click="ctrl.goToPage('/stats')">
+							<md-icon>timeline</md-icon>
+							<p>Stats</p>
+						</md-list-item>
+					</md-list>
+				</div>
+
+			</md-content>
+
+		</md-sidenav>
+
 		<div ng-view flex></div>
 	</md-content>
 

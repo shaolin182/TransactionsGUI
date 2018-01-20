@@ -22,5 +22,6 @@
     "karma-sinon": "^1.0.5",
     "mocha": "^3.3.0",
     "sinon": "^2.3.2"
-  }
+  },
+  "dependencies": {}
 }

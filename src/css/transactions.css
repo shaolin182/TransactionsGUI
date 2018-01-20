@@ -3,8 +3,8 @@
 }
 
 .mainContent {
-	padding-left: 2%;
-	padding-right: 2%;
+	padding-left: 1%;
+	padding-right: 1%;
 }
 
 .bankAccountCard {
@@ -82,4 +82,22 @@ table.md-table tfoot.md-foot > tr.md-row {
 
 .searchText:focus {
 	outline-width: 0;
+}
+
+.chart-panel {
+	margin: 10px;
+	border-color: #999;
+	border: 1px solid;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+
+.chart-panel-heading {
+	font-weight: bold;
+	padding: 10px 15px;
+}
+
+.chart-panel-content {
+	padding: 10px;
 }

@@ -1,0 +1,51 @@
+<div layout="row">
+	
+	<md-content layout="column" flex>
+
+		<div>
+			<md-card flex>
+				<!--<md-toolbar class="md-table-toolbar md-default chart-panel-heading">Critères</md-toolbar>-->
+				<form>
+					<div layout="row">
+						<md-input-container>
+							<label>Start Date</label>
+							<md-datepicker ng-model="startDate" md-current-view="year"></md-datepicker>
+						</md-input-container>
+
+						<md-input-container>
+							<label>End Date</label>
+							<md-datepicker ng-model="endDate" md-current-view="year"></md-datepicker>
+						</md-input-container>
+						<span flex></span>
+						<md-button ng-click="ctrl.applyFilter()">Apply</md-button>
+					</div>
+				</form>
+			</md-card>
+		</div>
+
+		<div layout="row">
+			<md-card flex="50" layout="column">
+				<md-toolbar class="md-table-toolbar md-default chart-panel-heading">
+					Ressources disponibles au fil des mois
+				</md-toolbar>
+
+				<div flex="50" class="chart-panel-content" >
+					<canvas id="cumulByMonth" class="chart chart-bar" chart-data="cumulByMonth.data" chart-labels="cumulByMonth.labels" chart-colors="cumulByMonth.chartColor" />
+				</div>
+			</md-card>
+
+			<md-card flex="50" layout="column">
+				<md-toolbar class="md-table-toolbar md-default chart-panel-heading">
+					Solde par mois
+				</md-toolbar>
+
+				<div flex="50" class="chart-panel-content" >
+					<canvas id="costByMonth" class="chart chart-bar" chart-data="costByMonth.data" chart-labels="costByMonth.labels" chart-colors="costByMonth.chartColor" />
+				</div>
+			</md-card>
+		</div>
+
+	</md-content>
+
+</div>
+

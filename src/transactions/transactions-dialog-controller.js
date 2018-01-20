@@ -49,6 +49,12 @@ transactionsDialogController.controller('TransactionsDialogCtrl', ['$scope', '$m
 		};
 	}
 
+	self.reinitTransaction = function () {
+		$scope.transaction.income = 0;
+		$scope.transaction.outcome = 0;
+		$scope.transaction.multi = false;
+	}
+
 	/*
 	* Given the 'multi' property we init sub transaction if it's true, we delete it otherwise
 	*/
@@ -99,7 +105,7 @@ transactionsDialogController.controller('TransactionsDialogCtrl', ['$scope', '$m
      };
 
      /*
-     * Close current modal dialog
+     * Add a new transaction and init another one
      */
      self.addDialog = function() {
      	Transactions.save($scope.transaction).$promise

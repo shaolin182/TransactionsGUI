@@ -6,7 +6,20 @@
  */
  var transactionsApp = angular
  .module('transactions', [
- 	'ngRoute', 'transactionsController', 'dialogController', 'transactionsDialogController', 'transactionsServiceModule', 'ngMaterial', 'md.data.table', 'categoriesServiceModule', 'bankaccountServiceModule', 'angularMoment'
+ 	'ngRoute', 
+ 	'transactionsController', 
+ 	'dialogController', 
+ 	'transactionsDialogController',
+ 	'statsController' ,
+ 	'mainController',
+ 	'transactionsServiceModule', 
+ 	'ngMaterial', 
+ 	'md.data.table', 
+ 	'categoriesServiceModule',
+ 	'bankaccountServiceModule', 
+ 	'angularMoment',
+ 	'chart.js', 
+ 	'statsServiceModule'
  	]);
 
 
@@ -15,6 +28,11 @@
  	.when('/', {
  		templateUrl: 'transactions/transactions.html',
  		controller: 'TransactionsCtrl', 
+ 		controllerAs:'ctrl'
+ 	})
+ 	.when('/stats', {
+ 		templateUrl: 'stats/stats.html',
+ 		controller: 'StatsCtrl', 
  		controllerAs:'ctrl'
  	})
  	.otherwise({
