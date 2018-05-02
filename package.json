@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "http-server -a localhost -p 8000 -c-1 ./src"
+    "start": "http-server -p 8000 -c-1 ./src"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
     "karma-phantomjs-launcher": "^1.0.4",
     "karma-sinon": "^1.0.5",
     "mocha": "^3.3.0",
+    "phantomjs-polyfill-find-index": "^1.0.1",
     "sinon": "^2.3.2"
   },
   "dependencies": {}

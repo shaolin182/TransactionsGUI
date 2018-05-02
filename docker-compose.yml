@@ -1,0 +1,30 @@
+version: "2"
+services:
+  transactions-gui:
+    container_name: transactions-gui
+    restart: always
+    build: .
+    ports:
+      - "8000:8000"
+    links:
+      - transactions
+    volumes:
+      - .:/usr/src/app/
+  transactions:
+    container_name: transactions-back-office
+    build:
+      context: ../Transactions/
+    restart: always
+    ports:
+      - "8080:8080"
+    links:
+      - mongo
+    volumes:
+      - ../Transactions/src:/usr/src/app/src  
+  mongo:
+    container_name: mongo-db
+    image: mongo
+    volumes:
+      - ../Transactions/data:/data/db
+    ports:
+      - "27017:27017"

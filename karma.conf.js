@@ -32,7 +32,11 @@ module.exports = function(config) {
     'src/categories/categories-service.js',
     'src/bankaccount/bankaccount-service.js', 
     'src/transactions/transactions-controller-test.js',
-    'src/transactions/transactions-dialog-controller.js'
+    'src/transactions/transactions-dialog-controller.js', 
+    'src/stats/stats-controller.js', 
+    'src/stats/stats-controller.spec.js', 
+    'src/stats/stats-service.js',
+    './node_modules/phantomjs-polyfill-find-index/findIndex-polyfill.js'
     ],
 
 
@@ -72,7 +76,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome'],
+    browsers: ['PhantomJS'],
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
