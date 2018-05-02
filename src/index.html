@@ -38,6 +38,8 @@
 	<script src="bankaccount/bankaccount-service.js"></script>
 	<script src="stats/stats-controller.js"></script>
 	<script src="stats/stats-service.js"></script>
+	<script src="stats/stats-chart-directive.js"></script>
+
 
 </head>
 
@@ -67,6 +69,16 @@
 						<md-list-item ng-click="ctrl.goToPage('/stats')">
 							<md-icon>timeline</md-icon>
 							<p>Stats</p>
+
+						</md-list-item>
+						<md-list-item ng-click="ctrl.goToPage('/stats')">
+							<p style="padding-left: 30%;">Général</p>
+						</md-list-item>
+						<md-list-item ng-click="ctrl.goToPage('/stats')">
+							<p style="padding-left: 30%;">By Category</p>
+						</md-list-item>
+						<md-list-item ng-click="ctrl.goToPage('/stats')">
+							<p style="padding-left: 30%;">By Account</p>
 						</md-list-item>
 					</md-list>
 				</div>

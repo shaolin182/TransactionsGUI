@@ -5,83 +5,68 @@ statsController.controller('StatsCtrl', ['$scope', 'Stats', function ($scope, St
 
 	var self = this;
 
-	var data = {
-		match : {}, 
-		group : {
-			_id: {
-				year : { $year: "$date" },        
-				month : { $month: "$date" },        
-			},
-			costByMonth: { $sum: "$cost" }
-		}, 
-		sort : {"_id.year":1, "_id.month":1}
-	} 
-
-
-	Stats.getTotalCostByMonth(data, function (result) {
-		statsCostByMonth(result);
-		statsCumulCostByMonth(result);
-	});
+	/**
+	* Filter information
+	*/
+	$scope.filter = {};
 
 	/**
-	* Build data for chart about cost by month
+	* Match data for mongo query
 	*/
-	function statsCostByMonth(result) {
-		$scope.costByMonth = {};
-		$scope.costByMonth.labels = result.map(function (currentElement) {
-			return currentElement._id.year + "-" + currentElement._id.month;
-		})
+	self.matchRequest = {};	
 
-		$scope.costByMonth.data = result.map(function (currentElement) {
-			return currentElement.costByMonth / 100;
-		})
-
-		$scope.costByMonth.chartColor = result.map(function (currentElement) {
-			return "rgb(54,172,207)";
-		})
+	/*
+	* Load statistics about balance by month
+	*/
+	self.loadStatBalanceByMonth = function () {
+		Stats.getBalanceByMonth(self.matchRequest)
+		.then (function (result) {
+			$scope.costByMonth = result;
+			$scope.costByMonth.title = "Solde par mois";
+			$scope.costByMonth.type = "bar";
+		});		
 	}
 
-
-	function statsCumulCostByMonth(result) {
-		$scope.cumulByMonth = {
-			data : []
-		};
-		$scope.cumulByMonth.labels = result.map(function (currentElement) {
-			return currentElement._id.year + "-" + currentElement._id.month;
-		})
-
-		$scope.cumulByMonth.chartColor = result.map(function (currentElement) {
-			return "rgb(54,172,207)";
-		})	
-
-		result.forEach(function (currentElement, index)  {
-			if (index > 0) {
-				$scope.cumulByMonth.data.push((currentElement.costByMonth / 100) + $scope.cumulByMonth.data[index - 1]) ;
-			} else {
-				$scope.cumulByMonth.data.push(currentElement.costByMonth / 100);		
-			}
-		})
-	}
-
-	self.applyFilter = function () {
-		data = {
-			match : {date : {$gt : $scope.startDate, $lt : $scope.endDate}}, 
-			group : {
-				_id: {
-					year : { $year: "$date" },        
-					month : { $month: "$date" },        
-				},
-				costByMonth: { $sum: "$cost" }
-			}, 
-			sort : {"_id.year":1, "_id.month":1}
-		} 
-
-		Stats.getTotalCostByMonth(data, function (result) {
-			statsCostByMonth(result);
-			statsCumulCostByMonth(result);
+	/*
+	* Load statistics about sum balance by month
+	*/
+	self.loadStatSumBalanceByMonth = function () {
+		Stats.getSumBalanceByMonth(self.matchRequest)
+		.then (function (result) {
+			$scope.cumulByMonth = result;
+			$scope.cumulByMonth.title = "Cumul des soldes par mois";
+			$scope.cumulByMonth.type = "bar";
 		});
 	}
 
+	/*
+	* Load statistics about category
+	*/
+	self.loadStatByCategory = function() {
+		Stats.getStatByCategory(self.matchRequest)
+		.then(function(result) {
+			$scope.costByCategory = result;
+			$scope.costByCategory.title = "Dépenses par catégorie";
+			$scope.costByCategory.type = "pie";
+			$scope.costByCategory.options = {legend: {display: true, position:'right'}}
+		})
+	}
 
+	/**
+	* Call server for statistics data
+	*/
+	self.loadStatistics = function () {
+		self.loadStatBalanceByMonth();
+		self.loadStatSumBalanceByMonth();
+		self.loadStatByCategory();
+	}
+
+	self.loadStatistics();
+
+	self.applyFilter = function () {
+		
+		self.matchRequest = {"date" : {$gt : $scope.filter.startDate, $lt : $scope.filter.endDate}};
+		
+		self.loadStatistics();
+	}
 }])
-

@@ -1,0 +1,9 @@
+<md-card layout="column">
+	<md-toolbar class="md-table-toolbar md-default chart-panel-heading">
+		{{config.title}}
+	</md-toolbar>
+
+	<div class="chart-panel-content" >
+		<canvas class="chart-base" chart-type="config.type" chart-data="config.data" chart-labels="config.labels" chart-colors="config.chartColor" chart-options="config.options" />
+	</div>
+</md-card>

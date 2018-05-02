@@ -19,7 +19,8 @@
  	'bankaccountServiceModule', 
  	'angularMoment',
  	'chart.js', 
- 	'statsServiceModule'
+ 	'statsServiceModule', 
+ 	'chartDirective'
  	]);
 
 
