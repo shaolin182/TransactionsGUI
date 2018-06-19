@@ -8,7 +8,7 @@ describe('TransactionsCtrl', function(){
 	var $scope;
 	var ctrl;
 	var deferred;
-	var mockTransaction;
+	var mockTransaction, mockResource;
 
 	// Load transactions modules
 	beforeEach(module('transactionsController'));
@@ -19,7 +19,11 @@ describe('TransactionsCtrl', function(){
 
 		deferred = $q.defer();
 
-		mockTransaction = sinon.stub({
+		mockTransaction =sinon.stub({
+			getResource : function(){}
+		});
+
+		mockResource = sinon.stub({
 			save : function () {}, 
 			query : function() {}, 
 			remove : function () {}
@@ -27,8 +31,10 @@ describe('TransactionsCtrl', function(){
 
 		var mdDialog = $mdDialog;
 
-		mockTransaction.save.returns({$promise : deferred.promise});
-		mockTransaction.remove.returns({$promise : deferred.promise});
+		mockTransaction.getResource.returns(mockResource);
+
+		mockResource.save.returns({$promise : deferred.promise});
+		mockResource.remove.returns({$promise : deferred.promise});
 
 		var mockCategories = sinon.stub({getCategories : function() {}});
 
@@ -105,7 +111,7 @@ describe('TransactionsCtrl', function(){
 
 			$scope.$apply();
 
-			assert.isOk(mockTransaction.save.calledOnce, 'saving transaction should be called once');
+			assert.isOk(mockResource.save.calledOnce, 'saving transaction should be called once');
 			assert.equal(1, $scope.items.length, 'should have a new element in item list');
 			assert.equal(12345, $scope.items[0].transaction._id, 'should have an id');
 			done();
@@ -142,10 +148,10 @@ describe('TransactionsCtrl', function(){
 
 			assert.equal(3, $scope.items.length, 'should have 3 elements now');
 			assert.sameDeepMembers([{transaction:{_id:1}},{transaction:{_id:3}},{transaction:{_id:4}}], $scope.items, 'only 1,3 et 4 transaction should exist');
-			assert.isOk(mockTransaction.remove.calledThrice, 'remove moethod shoud have been called three times');
-			assert.deepEqual({id:2}, mockTransaction.remove.getCall(0).args[0], '1st Call should delete element with id 2');
-			assert.deepEqual({id:5}, mockTransaction.remove.getCall(1).args[0], '2nd Call should delete element with id 5');
-			assert.deepEqual({id:6}, mockTransaction.remove.getCall(2).args[0], '3rd Call should delete element with id 6');
+			assert.isOk(mockResource.remove.calledThrice, 'remove moethod shoud have been called three times');
+			assert.deepEqual({id:2}, mockResource.remove.getCall(0).args[0], '1st Call should delete element with id 2');
+			assert.deepEqual({id:5}, mockResource.remove.getCall(1).args[0], '2nd Call should delete element with id 5');
+			assert.deepEqual({id:6}, mockResource.remove.getCall(2).args[0], '3rd Call should delete element with id 6');
 			assert.equal(0, $scope.itemSelected.length, 'selected item should be empty');
 			done();
 

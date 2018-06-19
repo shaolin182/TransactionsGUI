@@ -33,7 +33,7 @@ transactionsController.controller('TransactionsCtrl', ['$scope', 'Transactions',
 	*/ 
 	self.loadTransactions = function () {
 		var resultItem = [];
-		Transactions.query(function (results) {
+		Transactions.getResource().query(function (results) {
 			results.forEach(function (currentElement) {
 
 				// encapsulate into a row item
@@ -94,7 +94,7 @@ transactionsController.controller('TransactionsCtrl', ['$scope', 'Transactions',
 	self.addNewTransaction = function() {
 		var transaction = self.initTransaction();
 
-		Transactions.save(transaction).$promise
+		Transactions.getResource().save(transaction).$promise
 		.then (function (result) {
 			var item = self.encapsulateTransaction(result);
 			$scope.items.push(item);
@@ -108,7 +108,7 @@ transactionsController.controller('TransactionsCtrl', ['$scope', 'Transactions',
 		$scope.itemSelected.forEach(function (currentElement){
 			var currentId = currentElement.transaction._id;
 			var params={'id':currentId};
-			Transactions.remove(params).$promise
+			Transactions.getResource().remove(params).$promise
 			.then (function () {
 
 				// find index
@@ -127,7 +127,7 @@ transactionsController.controller('TransactionsCtrl', ['$scope', 'Transactions',
 
 	var update = function (currentItem) {
 		if (!currentItem.currentlySaving) {
-			Transactions.save(currentItem.transaction, function () {
+			Transactions.getResource().save(currentItem.transaction, function () {
 				currentItem.currentlySaving = false;
 				currentItem.changed = false;	
 			});

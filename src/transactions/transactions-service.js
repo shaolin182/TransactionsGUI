@@ -1,30 +1,38 @@
 'use strict';
 
 function transactionsService($resource) {
-/*
+
 	var transactionsService = {};
 
+	transactionsService.getResource = function () {
+		return $resource('http://localhost:8080/transactions/:id', {id:'@_id'});
+	};
 
-	transactionsService.getAll = function () {
-		return $resource('http://localhost:8080/transactions', {}, {getAll : {method: 'GET', isArray:true}});
+	/*
+	* Init a transaction with default value
+	*/
+	transactionsService.initTransaction = function () {
+		return {
+			income:0,
+			outcome:0,
+			date: new Date(),
+			multi: false
+		};
+	};
+
+	/**
+	* Init new transaction with default value and from last transaction	
+	* Called when we run the popup and when we click on 'Add' button
+	*/
+	transactionsService.reinitTransaction = function (transaction) {
+		var result = transactionsService.initTransaction();
+		result.bankaccount = transaction.bankaccount;
+		result.date = transaction.date;
+
+		return result;
 	}
-
-	transactionsService.update = function () {
-		return $resource('http://localhost:8080/transactions/:id', {}, {update : {method: 'POST', params:{id:'@_id'}}});
-	}
-
-	transactionsService.add = function () {
-		return $resource('http://localhost:8080/transactions', {}, {add : {method: 'POST'}});
-	}
-
-	transactionsService.remove = function () {
-		return $resource('http://localhost:8080/transactions/:id', {id:'@id'}, {remove : {method: 'DELETE'}});
-	}		
 
 	return transactionsService;
-	*/
-	return $resource('http://localhost:8080/transactions/:id', {id:'@_id'});
-
 }
 
 angular
