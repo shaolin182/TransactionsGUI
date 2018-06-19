@@ -28,6 +28,7 @@ module.exports = function(config) {
     'src/app.js',
     'src/transactions/transactions-controller.js',
     'src/transactions/transactions-service.js',
+    'src/transactions/transactions-service.spec.js',
     'src/dialog/dialog-controller.js',
     'src/categories/categories-service.js',
     'src/bankaccount/bankaccount-service.js', 
@@ -80,7 +81,7 @@ module.exports = function(config) {
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: true,
+    singleRun: false,
 
     // Concurrency level
     // how many browser should be started simultaneous

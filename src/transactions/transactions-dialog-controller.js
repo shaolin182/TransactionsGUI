@@ -6,35 +6,10 @@ transactionsDialogController.controller('TransactionsDialogCtrl', ['$scope', '$m
 
 	var self = this;
 
-	/*
-	* Init new transaction with default values
-	* Called when we run the popup and when we click on 'Add' button
-	*/ 
-	self.initTransaction = function () {
-		return {
-			income:0,
-			outcome:0,
-			date: new Date(),
-			multi: false
-		};
-	}
-
-	/**
-	* Init new transaction with default value and from last transaction	
-	* Called when we run the popup and when we click on 'Add' button
-	*/
-	self.reinitTransaction = function (transaction) {
-		var result = self.initTransaction();
-		result.bankaccount = transaction.bankaccount;
-		result.date = transaction.date;
-
-		return result;
-	}
-
 	/**
 	* Init Transaction
 	*/
-	$scope.transaction = self.initTransaction();
+	$scope.transaction = Transactions.initTransaction();
 
 	/**
 	* Contains sub transaction selected by user
@@ -114,7 +89,7 @@ transactionsDialogController.controller('TransactionsDialogCtrl', ['$scope', '$m
      * Add a new transaction and init another one
      */
      self.addDialog = function() {
-     	Transactions.save($scope.transaction).$promise
+     	Transactions.getResource().save($scope.transaction).$promise
      	.then (function (result) {
      		$scope.transaction = self.reinitTransaction($scope.transaction);
      	});	
@@ -126,7 +101,7 @@ transactionsDialogController.controller('TransactionsDialogCtrl', ['$scope', '$m
      */ 
      self.okDialog = function() {
 
-     	Transactions.save($scope.transaction).$promise
+     	Transactions.getResource().save($scope.transaction).$promise
      	.then (function (result) {
      		$mdDialog.hide();
      	});	     	
