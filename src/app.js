@@ -14,7 +14,6 @@
  	'mainController',
  	'transactionsServiceModule', 
  	'ngMaterial', 
- 	'md.data.table', 
  	'categoriesServiceModule',
  	'bankaccountServiceModule', 
  	'angularMoment',

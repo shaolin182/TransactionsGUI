@@ -18,7 +18,7 @@
 	</div>
 
 	<!-- Main datatable -->
-	<md-card layout="column" class="transactionTable">
+	<md-card layout="column" class="transactionTable" ng-init="ctrl.loadTransactions()">
 		<!-- Action Toolbar -->
 		<md-toolbar class="md-table-toolbar md-default" >
 			<div class="md-toolbar-tools" layout="row">
@@ -43,7 +43,6 @@
 					</form>
 				</div>
 
-
 				<!-- Menu -->
 				<md-menu md-position-mode="target-right target">
 					<!-- More Button -->
@@ -66,81 +65,37 @@
 			</div>
 		</md-toolbar>
 
-		<md-table-container>
-			<table md-table md-row-select multiple ng-model="itemSelected" md-progress="transactions" >
-
-				<!-- Column definition -->
-				<thead md-head data-md-order="query.order">
-					<tr md-row>
-						<th md-column md-order-by="dateToDisplay" >Date</th>
-						<th md-column md-order-by="transaction.label">Description</th>
-						<th md-column md-order-by="transaction.category.label">Category</th>
-						<th md-column md-order-by="transaction.bankaccount.label">Account</th>
-						<th md-column md-order-by="transaction.income" ">Income</th>
-						<th md-column md-order-by="transaction.outcome" >Outcome</th>
-						<th md-column ng-if="editTable"></th>
-					</tr>
-				</thead>
-
-				<!-- Table content -->
-				<tbody md-body >
-					<tr md-row md-select="item" md-select-id="item.transaction._id" ng-repeat="item in items | orderBy : query.order | filter : query.filter | limitTo: query.limit : (query.page - 1) * query.limit ">
-
-						<!-- Date --> 
-						<td md-cell>
-							<span ng-if="!editTable">{{item.dateToDisplay | date:'dd/MM/yyyy'}}</span>
-							<md-datepicker ng-if="editTable" ng-model="item.dateToDisplay" md-placeholder="Enter date"  md-hide-icons="calendar" ng-change="item.transaction.date = item.dateToDisplay.toISOString();onChange(item)" ng-blur="onBlur(item)"></md-datepicker>
-						</td>
-
-						<!-- Transaction Label -->
-						<td md-cell>
-							<span ng-if="!editTable">{{item.transaction.label}}</span>
-							<input ng-if="editTable" width="100%" ng-model="item.transaction.label" ng-change="onChange(item)" ng-blur="onBlur(item)">
-						</td>
-
-						<!-- Category -->
-						<td md-cell>
-							<span ng-if="!editTable && item.transaction.category!=null">{{item.transaction.category.category}} : {{item.transaction.category.label}}</span>
-							<md-select ng-if="editTable" item.dateToDisplayng-model="item.transaction.category" placeholder="Select a category" ng-model-options="{trackBy: '$value.id'}" ng-change="onChange(item)" ng-blur="onBlur(item)" multiple="false">
-								<md-optgroup label="{{currentParent}}" ng-repeat="currentParent in categories.type">
-									<md-option  ng-value="category" ng-repeat="category in categories | filter: {category: currentParent}">{{category.label}}</md-option>
-								</md-optgroup>
-							</md-select>
-						</td>
-
-						<!-- Bank Account -->
-						<td md-cell>
-							<span ng-if="!editTable">{{item.transaction.bankaccount.category}} : {{item.transaction.bankaccount.label}}</span>
-							<md-select ng-if="editTable" ng-model="item.transaction.bankaccount" placeholder="Select a bank account" ng-model-options="{trackBy: '$value.id'}" ng-change="onChange(item)" ng-blur="onBlur(item)">
-								<md-optgroup label="{{currentType}}" ng-repeat="currentType in bankaccountList.type">
-									<md-option  ng-value="bankaccount" ng-repeat="bankaccount in bankaccountList | filter: {category: currentType}">{{bankaccount.label}}</md-option>
-								</md-optgroup>
-							</md-select>
-						</td>
-
-						<!-- Income -->
-						<td md-cell>
-							<span ng-if="!editTable">{{item.transaction.income}}</span>
-							<input ng-if="editTable" ng-model="item.transaction.income" type="number" ng-change="onChange(item)" ng-blur="onBlur(item)">
-						</td>
-
-						<!-- Outcome -->
-						<td md-cell>
-							<span ng-if="!editTable">{{item.transaction.outcome}}</span>
-							<input ng-if="editTable" ng-model="item.transaction.outcome" type="number" ng-change="onChange(item)" ng-blur="onBlur(item)">
-						</td>
-
-						<!-- Progress -->
-						<td md-cell ng-if="editTable"><md-progress-circular md-mode="indeterminate" md-diameter="20px" ng-show="item.currentlySaving"></md-progress-circular></td>
-					</tr>
-				</tbody>
-			</table>
-		</md-table-container>
-
-
-		<!-- Pagination -->
-		<md-table-pagination md-limit="query.limit" md-page="query.page" md-limit-options="query.query" md-page-select md-total="{{(items | filter : query.filter).length}}">
-		</md-table-pagination>
+		<md-content class="virtualRepeatdemoDeferredLoading">			
+			<md-list md-virtual-repeat-container id="vertical-container">
+		    	<md-list-item md-virtual-repeat="item in items | orderBy : query.order" class="repeated-item" layout="row">
+		    		<div id=group" ng-if="item.group" layout="column">
+		    			{{item.group}}
+		    		</div>
+		    		<div id="item" ng-if="item.group == undefined" layout="row" flex="100">
+		    			<div flex="5">
+		    				<md-checkbox ng-model="item.selected" ng-change="ctrl.updateSelectedList(item)"/>
+			    		</div>
+			    		<div flex="10">
+			        		{{item.dateToDisplay | date:'dd/MM/yyyy'}}
+			        	</div>
+			        	<div flex="25">
+			        		{{item.transaction.label}}
+			        	</div>
+			        	<div flex="20">
+			        		{{item.transaction.category.category}} : {{item.transaction.category.label}}
+			        	</div>
+			        	<div flex="20">
+			        		{{item.transaction.bankaccount.category}} : {{item.transaction.bankaccount.label}}
+			        	</div>
+			        	<div flex="10">
+			        		{{item.transaction.income}}
+			        	</div>
+			        	<div flex="10">
+			        		{{item.transaction.outcome}}
+			        	</div>
+		    		</div>
+		      	</md-list-item>
+		    </md-list>
+		</md-content>
 	</md-card>
-
 </div>

@@ -101,3 +101,27 @@ table.md-table tfoot.md-foot > tr.md-row {
 .chart-panel-content {
 	padding: 10px;
 }
+
+
+
+.virtualRepeatdemoDeferredLoading #vertical-container {
+  height: 700px;
+  width: 100%;
+  max-width: 100%; 
+}
+
+.virtualRepeatdemoDeferredLoading .repeated-item {
+  border-bottom: 1px solid #eee;
+  box-sizing: border-box;
+  height: 30px;
+  padding-top: 10px; }
+
+.virtualRepeatdemoDeferredLoading md-content {
+  margin: 16px; }
+
+/*.virtualRepeatdemoDeferredLoading md-virtual-repeat-container {
+  border: solid 1px grey; }*/
+
+.virtualRepeatdemoDeferredLoading .md-virtual-repeat-container .md-virtual-repeat-offsetter div {
+  padding-left: 16px; }
+
