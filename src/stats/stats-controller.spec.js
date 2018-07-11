@@ -48,13 +48,13 @@ describe ("Unit Testing of controller StatsCtrl", function () {
 
 		mockStatService = sinon.stub({
 			getBalanceByMonth : function (){},
-			getStatByCategory : function (){}, 
+			getBalanceByYear : function (){},
 			getSumBalanceByMonth : function (){}
 		})
 
 		mockStatService.getBalanceByMonth.returns(deferred.promise);	
-		mockStatService.getStatByCategory.returns(deferred.promise);
-		mockStatService.getSumBalanceByMonth.returns(deferred.promise);	
+		mockStatService.getBalanceByYear.returns(deferred.promise);
+		mockStatService.getSumBalanceByMonth.returns(deferred.promise);
 
 		controller = $controller('StatsCtrl', { $scope: $scope, Stats : mockStatService });
 	}));
@@ -62,13 +62,13 @@ describe ("Unit Testing of controller StatsCtrl", function () {
 	it("Loading statistics should called each specific function", function (done) {
 
 		controller.loadStatBalanceByMonth = sinon.spy();
+		controller.loadStatBalanceByYear = sinon.spy();
 		controller.loadStatSumBalanceByMonth = sinon.spy();
-		controller.loadStatByCategory = sinon.spy();
 
 		controller.loadStatistics();
 
 		assert.isOk(controller.loadStatBalanceByMonth.calledOnce, 'loadStatBalanceByMonth function should be called when module boots');
-		assert.isOk(controller.loadStatByCategory.calledOnce, 'loadStatByCategory function should be called when module boots');
+		assert.isOk(controller.loadStatBalanceByYear.calledOnce, 'loadStatBalanceByYear function should be called when module boots');
 		assert.isOk(controller.loadStatSumBalanceByMonth.calledOnce, 'loadStatSumBalanceByMonth function should be called when module boots');
 
 		done();
@@ -98,21 +98,6 @@ describe ("Unit Testing of controller StatsCtrl", function () {
 		assert.equal($scope.cumulByMonth[0], 'loadStatSumBalanceByMonth');
 		assert.equal($scope.cumulByMonth.title, 'Cumul des soldes par mois');
 		assert.equal($scope.cumulByMonth.type, 'bar');
-
-		done();
-	});
-
-	it ("Unit Test for function loadStatByCategory", function (done) {
-		controller.loadStatByCategory();
-
-		deferred.resolve(['loadStatByCategory']);
-		$scope.$apply();
-
-		assert.isOk(mockStatService.getStatByCategory.calledTwice, 'getStatByCategory function should be called when twice, once when module boots, once when function is called');
-		assert.equal($scope.costByCategory[0], 'loadStatByCategory');
-		assert.equal($scope.costByCategory.title, 'Dépenses par catégorie');
-		assert.equal($scope.costByCategory.type, 'pie');
-		assert.deepEqual($scope.costByCategory.options, {legend: {display: true, position:'right'}});
 
 		done();
 	});

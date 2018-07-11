@@ -24,16 +24,14 @@
 		</div>
 
 		<div layout="row">
-			<div flex="50" layout="column">
-				<stats-chart-directive config="cumulByMonth"/>
-			</div>
-			<div flex="50" layout="column">
-				<stats-chart-directive config="costByMonth" />
-			</div>
+			<div flex="100" layout="column">
+				<stats-chart-directive config="costByCategory"/>
+            </div>
 		</div>
-
 		<div layout="row" >
-			<stats-chart-directive config="costByYear" flex="50" layout="column"/>
+			<div flex="100" layout="column">
+				<stats-chart-directive config="costByCategoryOverMonth"/>
+			</div>
 		</div>
 	</md-content>
 

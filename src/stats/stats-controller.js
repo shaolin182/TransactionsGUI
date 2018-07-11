@@ -28,6 +28,18 @@ statsController.controller('StatsCtrl', ['$scope', 'Stats', function ($scope, St
 	}
 
 	/*
+	* Load statistics about balance by month
+	*/
+	self.loadStatBalanceByYear = function () {
+		Stats.getBalanceByYear(self.matchRequest)
+		.then (function (result) {
+			$scope.costByYear = result;
+			$scope.costByYear.title = "Solde par année";
+			$scope.costByYear.type = "bar";
+		});		
+	}
+
+	/*
 	* Load statistics about sum balance by month
 	*/
 	self.loadStatSumBalanceByMonth = function () {
@@ -39,26 +51,13 @@ statsController.controller('StatsCtrl', ['$scope', 'Stats', function ($scope, St
 		});
 	}
 
-	/*
-	* Load statistics about category
-	*/
-	self.loadStatByCategory = function() {
-		Stats.getStatByCategory(self.matchRequest)
-		.then(function(result) {
-			$scope.costByCategory = result;
-			$scope.costByCategory.title = "Dépenses par catégorie";
-			$scope.costByCategory.type = "pie";
-			$scope.costByCategory.options = {legend: {display: true, position:'right'}}
-		})
-	}
-
 	/**
 	* Call server for statistics data
 	*/
 	self.loadStatistics = function () {
 		self.loadStatBalanceByMonth();
+		self.loadStatBalanceByYear();
 		self.loadStatSumBalanceByMonth();
-		self.loadStatByCategory();
 	}
 
 	self.loadStatistics();
