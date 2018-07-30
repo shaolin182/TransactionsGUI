@@ -10,7 +10,7 @@ describe ("Unit Testing of controller StatsAccountCtrl", function () {
 	/*
 	* Mock for stat service module
 	*/
-	var mockStatService;
+	var mockStatService, mockStatFilter;
 
 	/*
 	* Mock scope used for unit test
@@ -45,13 +45,14 @@ describe ("Unit Testing of controller StatsAccountCtrl", function () {
 		// Init scope
 		$scope = _$rootScope_.$new();
 
+		mockStatFilter = sinon.stub({});
 		mockStatService = sinon.stub({
 			getOutcomeByAccountType : function (){}
 		})
 
 		mockStatService.getOutcomeByAccountType.returns(deferred.promise);
 
-		controller = $controller('StatsAccountCtrl', { $scope: $scope, Stats : mockStatService });
+		controller = $controller('StatsAccountCtrl', { $scope: $scope, Stats : mockStatService, StatsFilter : mockStatFilter });
 	}));
 
 	it("Loading statistics should called each specific function", function (done) {

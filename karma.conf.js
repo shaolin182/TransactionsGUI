@@ -39,6 +39,7 @@ module.exports = function(config) {
     'src/stats/stats-by-category-controller.js', 
     'src/stats/stats-by-category-controller.spec.js', 
     'src/stats/stats-service.js',
+    'src/stats/stats-filter.js',
     'src/stats/stats-service.spec.js',
     './node_modules/phantomjs-polyfill-find-index/findIndex-polyfill.js'
     ],

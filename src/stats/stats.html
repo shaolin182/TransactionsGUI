@@ -3,24 +3,7 @@
 	<md-content layout="column" flex>
 
 		<div>
-			<md-card flex>
-				<!--<md-toolbar class="md-table-toolbar md-default chart-panel-heading">Critères</md-toolbar>-->
-				<form>
-					<div layout="row">
-						<md-input-container>
-							<label>Start Date</label>
-							<md-datepicker ng-model="filter.startDate" md-current-view="year"></md-datepicker>
-						</md-input-container>
-
-						<md-input-container>
-							<label>End Date</label>
-							<md-datepicker ng-model="filter.endDate" md-current-view="year"></md-datepicker>
-						</md-input-container>
-						<span flex></span>
-						<md-button ng-click="ctrl.applyFilter()">Apply</md-button>
-					</div>
-				</form>
-			</md-card>
+			<stats-filter-directive filter="filter"/>
 		</div>
 
 		<div layout="row">

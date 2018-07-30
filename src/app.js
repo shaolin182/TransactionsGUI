@@ -22,9 +22,10 @@
  	'angularMoment',
  	'chart.js', 
  	'statsServiceModule', 
- 	'chartDirective'
+	'chartDirective', 
+	'statsFilterModule', 
+	'filterDirective'
  	]);
-
 
  transactionsApp.config(['$routeProvider', function ($routeProvider) {
  	$routeProvider

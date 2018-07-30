@@ -5,126 +5,15 @@ function statsService($resource) {
 	var statsService = {};
 
 	/**
-	* Query for aggregate data and retrieve statistics by category
-	*/
-	var aggregateDataByCategory = {
-		match : {}, 
-		group : {
-			_id: "$category.category",
-			total: { $sum: "$cost" }
-		}, 
-		sort : {"_id":1}
-	}
-
-	/**
-	* Query for aggregate data and retrieve statistics by category over month
-	*/
-	var aggregateDataByCategoryOverMonth = {
-		match : {}, 
-		group : {
-			_id: {
-				year : { $year: "$date" },        
-				month : { $month: "$date" }, 
-				category : "$category.category"       
-			},
-			total: { $sum: "$cost" }
-		}, 
-		sort : {"_id.year":1, "_id.month":1}
-	}
-
-	/**
-	* Query for aggregate data and retrieve balance by month
-	*/
-	var aggregateBalanceByMonth = {
-		match : {}, 
-		group : {
-			_id: {
-				year : { $year: "$date" },        
-				month : { $month: "$date" },        
-			},
-			total: { $sum: "$cost" }
-		}, 
-		sort : {"_id.year":1, "_id.month":1}
-	}
-
-	/**
-	* Query for aggregate data and retrieve balance by year
-	*/
-	var aggregateBalanceByYear = {
-		match : {}, 
-		group : {
-			_id: {
-				year : { $year: "$date" },        
-			},
-			total: { $sum: "$cost" }
-		}, 
-		sort : {"_id.year":1}
-	}
-	
-	var aggregateOutcomeByAccountType = {
-		match : {category : { $exists:true}}, 
-		group : {
-			_id: {
-				year : { $year: "$date" },        
-				month : { $month: "$date" }, 
-				accountType : "$bankaccount.category"       
-			},
-			total: { $sum: "$outcome" }
-		}, 
-		sort : {"_id.year":1, "_id.month":1}
-	}
-
-	/**
 	* Init resource module for accessing server
 	*/
 	statsService.getResource = function () {
 		return $resource('http://localhost:8080/stats', null, {
-			aggregateData: {method:'POST', params: {match : '@match', group : '@group', sort : '@sort'}, url:'http://localhost:8080/stats/aggregateData', isArray:true} , 
-		});
-	}
-
-	function isEmpty(obj) {
-	    for(var Result in obj) {
-	        if(obj.hasOwnProperty(Result))
-	            return false;
-	    }
-	    return true;
-	}
-
-	/*
-	* Call remote application for obtaining aggregate data
-	*
-	* @Param
-	* query : query run on database
-	* match : filter applied on query
-	* transform : a function for converting results
-	*/
-	statsService.aggregateData = function (query, match, transform) {
-		return new Promise(function (resolve, reject) {
-
-			if (query.match.$and == undefined) {
-				query.match = match;
-			} else {
-				var indexDate = query.match.$and.findIndex(function (currentElement) {
-					return currentElement.date != undefined;
-				})
-				if (indexDate != -1) {
-					query.match.$and[indexDate] = match;
-				} else {
-					if (!isEmpty(match)) {
-						query.match.$and.push(match);
-					}
-				}
-			}
-
-			statsService.getResource().aggregateData(query).$promise
-			.then (function (results) {
-				var response = transform(results);
-				resolve(response);
-			})
-			.catch (function (err) {
-				reject(err);
-			})
+			totalCostByMonth : {method:'POST', params: {}, url:'http://localhost:8080/stats/totalCostByMonth', isArray:true} ,
+			totalCostByYear : {method:'POST', params: {}, url:'http://localhost:8080/stats/totalCostByYear', isArray:true} ,
+			totalCostByCategory : {method:'POST', params: {}, url:'http://localhost:8080/stats/totalCostByCategory', isArray:true} ,
+			totalCostByCategoryAndMonth : {method:'POST', params: {}, url:'http://localhost:8080/stats/totalCostByCategoryAndMonth', isArray:true} ,
+			totalCostByAccountAndMonth : {method:'POST', params: {}, url:'http://localhost:8080/stats/totalCostByAccountAndMonth', isArray:true} ,
 		});
 	}
 
@@ -132,42 +21,78 @@ function statsService($resource) {
 	* Apply filter sets by user and retrieve statistics about balance by month
 	*/
 	statsService.getBalanceByMonth = function (match) {
-		return statsService.aggregateData(aggregateBalanceByMonth, match, transformBalanceByMonth);
+		return new Promise(function (resolve, reject) {
+			return statsService.getResource().totalCostByMonth(match).$promise
+			.then (function (results) {
+				resolve(transformBalance(results));
+			})
+			.catch (err => {reject(err);});
+		});
 	}
 
 	/**
 	* Apply filter sets by user and retrieve statistics about balance by month
 	*/
 	statsService.getBalanceByYear = function (match) {
-		return statsService.aggregateData(aggregateBalanceByYear, match, transformBalanceByYear);
+		return new Promise(function (resolve, reject) {
+			return statsService.getResource().totalCostByYear(match).$promise
+			.then (function (results) {
+				resolve(transformBalance(results));
+			})
+			.catch (err => {reject(err);});
+		});
 	}
 
 	/**
 	* Apply filter sets by user and retrieve global statistics about sum of balance by month
 	*/
 	statsService.getSumBalanceByMonth = function (match) {
-		return statsService.aggregateData(aggregateBalanceByMonth, match, transformSumBalanceByMonth);
+		return new Promise(function (resolve, reject) {
+			return statsService.getResource().totalCostByMonth(match).$promise
+			.then (function (results) {
+				resolve(transformSumBalanceByMonth(results));
+			})
+			.catch (err => {reject(err);});
+		});
 	}
 
 	/**
 	* Apply filter sets by user and retrieve statistics by category
 	*/
 	statsService.getStatByCategory = function (match) {
-		return statsService.aggregateData(aggregateDataByCategory, match, transformStatsByCategory);
+		return new Promise(function (resolve, reject) {
+			return statsService.getResource().totalCostByCategory(match).$promise
+			.then (function (results) {
+				resolve(transformStatsByCategory(results));
+			})
+			.catch (err => {reject(err);});
+		});
 	}
 
 	/**
 	* Apply filter sets by user and retrieve statistics by category over month
 	*/
 	statsService.getStatByCategoryOverMonth = function (match) {
-		return statsService.aggregateData(aggregateDataByCategoryOverMonth, match, transformStatsByCategoryOverMonth);
+		return new Promise(function (resolve, reject) {
+			return statsService.getResource().totalCostByCategoryAndMonth(match).$promise
+			.then (function (results) {
+				resolve(transformStatsByCategoryOverMonth(results));
+			})
+			.catch (err => {reject(err);});
+		});
 	} 
 
 	/*
 	* Apply filter sets by user and retrieve statistics by account type
 	*/
 	statsService.getOutcomeByAccountType = function (match) {
-		return statsService.aggregateData(aggregateOutcomeByAccountType, aggregateOutcomeByAccountType.match, transformOutcomeByAccountType);
+		return new Promise(function (resolve, reject) {
+			return statsService.getResource().totalCostByAccountAndMonth(match).$promise
+			.then (function (results) {
+				resolve(transformOutcomeByAccountType(results));
+			})
+			.catch (err => {reject(err);});
+		});
 	}
 
 	/*
@@ -207,26 +132,13 @@ function statsService($resource) {
 			currentElement.total = statsService.convertCentToUnit(currentElement.total);
 			currentElement.total = statsService.convertToPositiveNumber(currentElement.total);
 		});
-
 		
 		response.data = statsService.convertResultToSeries(resultFiltered, 'category');
 
 		return response;
 	}
 
-	function transformBalanceByMonth (results) {
-		var response = {};
-
-		response.labels = results.map(statsService.getPeriod);
-		response.data = results
-		.map(statsService.getTotal)
-		.map(statsService.convertCentToUnit);
-		response.chartColor = results.map(getSpecificColor);
-
-		return response;
-	}
-
-	function transformBalanceByYear (results) {
+	function transformBalance (results) {
 		var response = {};
 
 		response.labels = results.map(statsService.getPeriod);
@@ -239,14 +151,9 @@ function statsService($resource) {
 	}
 
 	function transformSumBalanceByMonth (results) {
-		var response = {};
-
-		response.labels = results.map(statsService.getPeriod);
-		response.data = results
-			.map(statsService.getTotal)
-			.map(statsService.addTotalToPreviousElement)
-			.map(statsService.convertCentToUnit);
-		response.chartColor = results.map(getSpecificColor);
+		var response = transformBalance(results);
+		response.data = response.data
+			.map(statsService.addTotalToPreviousElement);
 
 		return response;
 	}

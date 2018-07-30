@@ -10,7 +10,7 @@ describe ("Unit Testing of controller StatsCategoryCtrl", function () {
 	/*
 	* Mock for stat service module
 	*/
-	var mockStatService;
+	var mockStatService, mockStatFilter;
 
 	/*
 	* Mock scope used for unit test
@@ -45,6 +45,7 @@ describe ("Unit Testing of controller StatsCategoryCtrl", function () {
 		// Init scope
 		$scope = _$rootScope_.$new();
 
+		mockStatFilter = sinon.stub({});
 		mockStatService = sinon.stub({
 			getStatByCategory : function (){},
 			getStatByCategoryOverMonth : function(){}
@@ -53,7 +54,7 @@ describe ("Unit Testing of controller StatsCategoryCtrl", function () {
 		mockStatService.getStatByCategory.returns(deferred.promise);
 		mockStatService.getStatByCategoryOverMonth.returns(deferred.promise);
 
-		controller = $controller('StatsCategoryCtrl', { $scope: $scope, Stats : mockStatService });
+		controller = $controller('StatsCategoryCtrl', { $scope: $scope, Stats : mockStatService, StatsFilter : mockStatFilter });
 	}));
 
 	it("Loading statistics should called each specific function", function (done) {
@@ -72,7 +73,7 @@ describe ("Unit Testing of controller StatsCategoryCtrl", function () {
 
 		deferred.resolve(['loadStatByCategory']);
 		$scope.$apply();
-
+		
 		assert.isOk(mockStatService.getStatByCategory.calledTwice, 'getStatByCategory function should be called when twice, once when module boots, once when function is called');
 		assert.equal($scope.costByCategory[0], 'loadStatByCategory');
 		assert.equal($scope.costByCategory.title, 'Dépenses par catégorie');
