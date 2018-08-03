@@ -1,0 +1,21 @@
+<div layout="row">
+	
+	<md-content layout="column" flex>
+
+		<div>
+			<stats-filter-directive filter="filter"/>
+		</div>
+
+		<div layout="row">
+			<div flex="100" layout="column">
+				<stats-chart-directive config="costByCategory"/>
+            </div>
+		</div>
+		<div layout="row" >
+			<div flex="100" layout="column">
+				<stats-chart-directive config="costByCategoryOverMonth"/>
+			</div>
+		</div>
+	</md-content>
+
+</div>

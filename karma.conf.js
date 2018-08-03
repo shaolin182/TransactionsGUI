@@ -1,6 +1,5 @@
 // Karma configuration
 // Generated on Wed May 03 2017 20:08:30 GMT+0200 (CEST)
-
 module.exports = function(config) {
   config.set({
 
@@ -36,7 +35,13 @@ module.exports = function(config) {
     'src/transactions/transactions-dialog-controller.js', 
     'src/stats/stats-controller.js', 
     'src/stats/stats-controller.spec.js', 
+    'src/stats/stats-by-account-controller.js', 
+    'src/stats/stats-by-account-controller.spec.js', 
+    'src/stats/stats-by-category-controller.js', 
+    'src/stats/stats-by-category-controller.spec.js', 
     'src/stats/stats-service.js',
+    'src/stats/stats-filter.js',
+    'src/stats/stats-service.spec.js',
     './node_modules/phantomjs-polyfill-find-index/findIndex-polyfill.js'
     ],
 
@@ -77,7 +82,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['PhantomJS'],
+    browsers: ['ChromeHeadless'],
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
