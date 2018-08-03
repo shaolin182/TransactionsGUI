@@ -102,8 +102,6 @@ table.md-table tfoot.md-foot > tr.md-row {
 	padding: 10px;
 }
 
-
-
 .virtualRepeatdemoDeferredLoading #vertical-container {
   height: 700px;
   width: 100%;
@@ -114,7 +112,8 @@ table.md-table tfoot.md-foot > tr.md-row {
   border-bottom: 1px solid #eee;
   box-sizing: border-box;
   height: 30px;
-  padding-top: 10px; }
+  padding-top: 18px; 
+}
 
 .virtualRepeatdemoDeferredLoading md-content {
   margin: 16px; }
@@ -123,5 +122,10 @@ table.md-table tfoot.md-foot > tr.md-row {
   border: solid 1px grey; }*/
 
 .virtualRepeatdemoDeferredLoading .md-virtual-repeat-container .md-virtual-repeat-offsetter div {
-  padding-left: 16px; }
+  padding-left: 16px; 
+}
 
+#groupMonth {
+	padding-left: 0px;
+	font-weight: bold;
+}
