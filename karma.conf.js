@@ -35,7 +35,12 @@ module.exports = function(config) {
     'src/transactions/transactions-dialog-controller.js', 
     'src/stats/stats-controller.js', 
     'src/stats/stats-controller.spec.js', 
+    'src/stats/stats-by-account-controller.js', 
+    'src/stats/stats-by-account-controller.spec.js', 
+    'src/stats/stats-by-category-controller.js', 
+    'src/stats/stats-by-category-controller.spec.js', 
     'src/stats/stats-service.js',
+    'src/stats/stats-service.spec.js'
     ],
 
 
