@@ -35,9 +35,12 @@
 	<script src="main-controller.js"></script>
 	<script src="bankaccount/bankaccount-service.js"></script>
 	<script src="stats/stats-controller.js"></script>
+	<script src="stats/stats-by-account-controller.js"></script>
+	<script src="stats/stats-by-category-controller.js"></script>
 	<script src="stats/stats-service.js"></script>
+	<script src="stats/stats-filter.js"></script>
 	<script src="stats/stats-chart-directive.js"></script>
-
+	<script src="stats/stats-filter-directive.js"></script>
 
 </head>
 
@@ -72,10 +75,10 @@
 						<md-list-item ng-click="ctrl.goToPage('/stats')">
 							<p style="padding-left: 30%;">Général</p>
 						</md-list-item>
-						<md-list-item ng-click="ctrl.goToPage('/stats')">
+						<md-list-item ng-click="ctrl.goToPage('/statsByCategory')">
 							<p style="padding-left: 30%;">By Category</p>
 						</md-list-item>
-						<md-list-item ng-click="ctrl.goToPage('/stats')">
+						<md-list-item ng-click="ctrl.goToPage('/statsByAccount')">
 							<p style="padding-left: 30%;">By Account</p>
 						</md-list-item>
 					</md-list>

@@ -10,7 +10,9 @@
  	'transactionsController', 
  	'dialogController', 
  	'transactionsDialogController',
- 	'statsController' ,
+	'statsController' ,
+	'statsAccountController', 
+	'statsCategoryController',
  	'mainController',
  	'transactionsServiceModule', 
  	'ngMaterial', 
@@ -19,9 +21,10 @@
  	'angularMoment',
  	'chart.js', 
  	'statsServiceModule', 
- 	'chartDirective'
+	'chartDirective', 
+	'statsFilterModule', 
+	'filterDirective'
  	]);
-
 
  transactionsApp.config(['$routeProvider', function ($routeProvider) {
  	$routeProvider
@@ -34,7 +37,17 @@
  		templateUrl: 'stats/stats.html',
  		controller: 'StatsCtrl', 
  		controllerAs:'ctrl'
- 	})
+	 })
+	 .when('/statsByAccount', {
+		templateUrl: 'stats/stats-by-account.html',
+		controller: 'StatsAccountCtrl', 
+		controllerAs:'ctrl'
+	})
+	.when('/statsByCategory', {
+		templateUrl: 'stats/stats-by-category.html',
+		controller: 'StatsCategoryCtrl', 
+		controllerAs:'ctrl'
+	})
  	.otherwise({
  		redirectTo: '/'
  	});
