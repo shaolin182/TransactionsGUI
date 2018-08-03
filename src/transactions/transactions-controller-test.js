@@ -8,6 +8,7 @@ describe('TransactionsCtrl', function(){
 	var $scope;
 	var ctrl;
 	var deferred;
+	var removeDefer;
 	var mockTransaction, mockResource;
 
 	// Load transactions modules
@@ -18,6 +19,7 @@ describe('TransactionsCtrl', function(){
 		$scope = _$rootScope_.$new();
 
 		deferred = $q.defer();
+		removeDefer = $q.defer();
 
 		mockTransaction =sinon.stub({
 			getResource : function(){}
@@ -34,7 +36,8 @@ describe('TransactionsCtrl', function(){
 		mockTransaction.getResource.returns(mockResource);
 
 		mockResource.save.returns({$promise : deferred.promise});
-		mockResource.remove.returns({$promise : deferred.promise});
+		mockResource.remove.returns({$promise : removeDefer.promise});
+		mockResource.query.returns({$promise : deferred.promise});
 
 		var mockCategories = sinon.stub({getCategories : function() {}});
 
@@ -49,23 +52,75 @@ describe('TransactionsCtrl', function(){
 		});
 	}));
 
-	/**
-	* Unit test about adding a new transaction
-	*/
-	describe('initTransaction', function(){
+	describe ('Load Transactions' , function () {
 
-		it('a new transaction should have correct defaults value', function (done) {
+		it ("loadTransaction function should made a call to server and called function 'buildItemList'", function (done) {
+			
+			sinon.spy(ctrl, 'buildItemsList');
+			ctrl.loadTransactions();
+			
+			deferred.resolve();
 
-			// Test adding a new element
-			var transaction = ctrl.initTransaction();
+			$scope.$apply();
 
-			assert.equal(0, transaction.income, 'Income default value is incorrect');
-			assert.equal(0, transaction.outcome, 'Outcome default value is incorrect');
-			assert.isOk(transaction.date instanceof Date, 'property date is not roperly instanciated');
+			assert.isOk(mockResource.query.calledOnce, "'query' method should be called once when we load transactions");
+			assert.isOk(ctrl.buildItemsList.calledOnce, "'query' method should be called once when we load transactions");
+			done();
+		});
+
+		it("'buildItemsList' function unit test - nominal case", function(done) {
+
+			var data=[
+				{'date':'2017-12-08T17:05:01.000Z'}, 
+				{'date':'2017-12-11T17:05:01.000Z'}, 
+				{'date':'2017-12-31T17:05:01.000Z'}, 
+				{'date':'2018-01-08T17:05:01.000Z'}, 
+				{'date':'2018-01-09T17:05:01.000Z'}, 
+				{'date':'2018-03-01T17:05:01.000Z'}, 
+				{'date':'2018-04-08T17:05:01.000Z'}, 
+				{'date':'2018-04-08T17:06:01.000Z'}, 
+				{'date':'2018-04-09T17:05:01.000Z'}, 
+				{'date':'2019-06-08T17:05:01.000Z'}, 
+				{'date':'2019-06-09T17:05:01.000Z'}, 
+				{'date':'2019-06-30T17:05:01.000Z'}, 
+				{'date':'2019-07-08T17:05:01.000Z'}, 
+				{'date':'2019-08-08T17:05:01.000Z'}, 
+				{'date':'2019-09-09T17:05:01.000Z'}
+			];
+
+			var result = ctrl.buildItemsList(data);
+
+			var expectedResult = [
+				{'group': 'Décembre 2017', 'dateToDisplay' : new Date("2017-12-08T17:05:01.000Z")},
+				{'transaction': {'date':'2017-12-08T17:05:01.000Z'}, 'dateToDisplay' : new Date("2017-12-08T17:05:01.000Z"), 'currentlySaving' : false},
+				{'transaction': {'date':'2017-12-11T17:05:01.000Z'}, 'dateToDisplay' : new Date("2017-12-11T17:05:01.000Z"), 'currentlySaving' : false},
+				{'transaction': {'date':'2017-12-31T17:05:01.000Z'}, 'dateToDisplay' : new Date("2017-12-31T17:05:01.000Z"), 'currentlySaving' : false},
+				{'group': 'Janvier 2018', 'dateToDisplay' : new Date("2018-01-08T17:05:01.000Z")},
+				{'transaction': {'date':'2018-01-08T17:05:01.000Z'}, 'dateToDisplay' : new Date("2018-01-08T17:05:01.000Z"), 'currentlySaving' : false},
+				{'transaction': {'date':'2018-01-09T17:05:01.000Z'}, 'dateToDisplay' : new Date("2018-01-09T17:05:01.000Z"), 'currentlySaving' : false},
+				{'group': 'Mars 2018', 'dateToDisplay' : new Date("2018-03-01T17:05:01.000Z")},
+				{'transaction': {'date':'2018-03-01T17:05:01.000Z'}, 'dateToDisplay' : new Date("2018-03-01T17:05:01.000Z"), 'currentlySaving' : false},
+				{'group': 'Avril 2018', 'dateToDisplay' : new Date("2018-04-08T17:05:01.000Z")},
+				{'transaction': {'date':'2018-04-08T17:05:01.000Z'}, 'dateToDisplay' : new Date("2018-04-08T17:05:01.000Z"), 'currentlySaving' : false},
+				{'transaction': {'date':'2018-04-08T17:06:01.000Z'}, 'dateToDisplay' : new Date("2018-04-08T17:06:01.000Z"), 'currentlySaving' : false},
+				{'transaction': {'date':'2018-04-09T17:05:01.000Z'}, 'dateToDisplay' : new Date("2018-04-09T17:05:01.000Z"), 'currentlySaving' : false},
+				{'group': 'Juin 2019', 'dateToDisplay' : new Date("2019-06-08T17:05:01.000Z")},
+				{'transaction': {'date':'2019-06-08T17:05:01.000Z'}, 'dateToDisplay' : new Date("2019-06-08T17:05:01.000Z"), 'currentlySaving' : false},
+				{'transaction': {'date':'2019-06-09T17:05:01.000Z'}, 'dateToDisplay' : new Date("2019-06-09T17:05:01.000Z"), 'currentlySaving' : false},
+				{'transaction': {'date':'2019-06-30T17:05:01.000Z'}, 'dateToDisplay' : new Date("2019-06-30T17:05:01.000Z"), 'currentlySaving' : false},
+				{'group': 'Juillet 2019', 'dateToDisplay' : new Date("2019-07-08T17:05:01.000Z")},
+				{'transaction': {'date':'2019-07-08T17:05:01.000Z'}, 'dateToDisplay' : new Date("2019-07-08T17:05:01.000Z"), 'currentlySaving' : false},
+				{'group': 'Août 2019', 'dateToDisplay' : new Date("2019-08-08T17:05:01.000Z")},
+				{'transaction': {'date':'2019-08-08T17:05:01.000Z'}, 'dateToDisplay' : new Date("2019-08-08T17:05:01.000Z"), 'currentlySaving' : false},
+				{'group': 'Septembre 2019', 'dateToDisplay' : new Date("2019-09-09T17:05:01.000Z")},
+				{'transaction': {'date':'2019-09-09T17:05:01.000Z'}, 'dateToDisplay' : new Date("2019-09-09T17:05:01.000Z"), 'currentlySaving' : false},
+			];
+
+			assert.equal(JSON.stringify(expectedResult), JSON.stringify(result), "Error in building items list from transactions");
 
 			done();
 		});
-	});
+	})
 
 	/**
 	* Unit test about adding encapsulating a transaction object
@@ -93,33 +148,6 @@ describe('TransactionsCtrl', function(){
 	});
 
 	/**
-	* Unit Test about adding a new transaction.
-	* List of transactions should be increased by one, new transaction should have default value and an id
-	*/
-	describe ('addNewTransaction', function (){
-
-		it ('Adding a transaction should add an element to items list', function (done) {
-
-			ctrl.addNewTransaction();
-
-			deferred.resolve({
-				income:0,
-				outcome:0,
-				date:"2017-05-08T17:00:34.642Z",
-				_id:12345
-			});
-
-			$scope.$apply();
-
-			assert.isOk(mockResource.save.calledOnce, 'saving transaction should be called once');
-			assert.equal(1, $scope.items.length, 'should have a new element in item list');
-			assert.equal(12345, $scope.items[0].transaction._id, 'should have an id');
-			done();
-
-		});
-	});
-
-	/**
 	* Unit Test about deleting a transaction.
 	* List of transactions should be decreased
 	*/
@@ -133,16 +161,39 @@ describe('TransactionsCtrl', function(){
 			$scope.itemSelected = [{transaction:{_id:2}},{transaction:{_id:5}},{transaction:{_id:6}}];
 		});
 
+		it("Unit Test for updateSelectedList function ", function(done) {
+
+			$scope.items[0].selected = true;
+			ctrl.updateSelectedList($scope.items[0]);
+
+			assert.equal(4, $scope.itemSelected.length, "$scope.itemSelected should have one more element");
+
+			$scope.items[0].selected = false;
+			ctrl.updateSelectedList($scope.items[0]);
+
+			assert.equal(3, $scope.itemSelected.length, "$scope.itemSelected should have one less element");
+
+			$scope.items[1].selected = false;
+			ctrl.updateSelectedList($scope.items[1]);
+
+			assert.equal(2, $scope.itemSelected.length, "$scope.itemSelected should have one less element");
+
+			$scope.items[2].selected = false;
+			ctrl.updateSelectedList($scope.items[2]);
+
+			assert.equal(2, $scope.itemSelected.length, "$scope.itemSelected should have same number of element");
+
+			done();
+		})
+
 		/**
-		* BeforeEach 
-		*	init items list
-		*	item selected items list (maybe in each method)
+		*	Make sure item selected are deleted
 		*/ 
 		it ('Delete transactions should remove elements from list', function (done) {
 
 			ctrl.deleteTransaction();
 
-			deferred.resolve({});
+			removeDefer.resolve({});
 
 			$scope.$apply();
 
@@ -154,9 +205,6 @@ describe('TransactionsCtrl', function(){
 			assert.deepEqual({id:6}, mockResource.remove.getCall(2).args[0], '3rd Call should delete element with id 6');
 			assert.equal(0, $scope.itemSelected.length, 'selected item should be empty');
 			done();
-
-
 		});
 	});
-
 });

@@ -91,7 +91,7 @@ transactionsDialogController.controller('TransactionsDialogCtrl', ['$scope', '$m
      self.addDialog = function() {
      	Transactions.getResource().save($scope.transaction).$promise
      	.then (function (result) {
-     		$scope.transaction = self.reinitTransaction($scope.transaction);
+     		$scope.transaction = Transactions.reinitTransaction($scope.transaction);
      	});	
 
      }

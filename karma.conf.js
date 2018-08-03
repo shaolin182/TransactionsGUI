@@ -17,7 +17,6 @@ module.exports = function(config) {
     'src/bower_components/angular/angular.js',
     'src/bower_components/angular-route/angular-route.js',
     'src/bower_components/angular-resource/angular-resource.js',
-    'src/bower_components/angular-material-data-table/dist/md-data-table.min.js',
     'src/bower_components/angular-material/angular-material.min.js',
     'src/bower_components/angular-animate/angular-animate.min.js',
     'src/bower_components/angular-aria/angular-aria.min.js',
@@ -82,7 +81,13 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['ChromeHeadless'],
+    browsers: ['ChromeHeadlessNoSandbox'],
+    customLaunchers: {
+      ChromeHeadlessNoSandbox: {
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox']
+      }
+    }, 
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits

@@ -5,19 +5,14 @@ transactionsController.controller('TransactionsCtrl', ['$scope', 'Transactions',
 
 	var self = this;
 
-	/**
-	* If true, data table  is editable.
-	*/
-	$scope.editTable = false;
+	/* List of month, used for displaying header */
+	const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
 
 	/*
 	* Default configuration about sorting and pagination, used in md-datatable directive
 	*/
 	$scope.query = {
 		order: '-dateToDisplay', // default order
-		limit: 20, // default page size
-		page: 1,  // default page
-		query:[5, 10, 20, 50, 100] // pagination limit
 	};
 
 	/*
@@ -28,26 +23,62 @@ transactionsController.controller('TransactionsCtrl', ['$scope', 'Transactions',
 	$scope.showFilter = false;
 
 	/*
+	* Transform results from database into readable format for GUI
+	* @param : 
+	* - result : transactions from database
+	*/
+	self.buildItemsList = function (data) {
+		var result = [];
+		var key, oldKey = "";
+		var item;
+
+		if (data) {
+			data.forEach(function (currentElement) {
+
+				// encapsulate into a row item
+				item = self.encapsulateTransaction(currentElement);
+				key = monthNames[item.dateToDisplay.getMonth()] + " " + item.dateToDisplay.getFullYear();
+				if (oldKey != key) {
+					result.push({'group' : key, 'dateToDisplay' : item.dateToDisplay});
+					oldKey = key;
+				}
+
+				result.push(item);
+			});
+		}
+		
+		return result;
+	}
+
+	/*
 	* Load all transactions and then encapsulate each row returned in an item object
 	* Item object contains specific property about it should be displayed
 	*/ 
 	self.loadTransactions = function () {
-		var resultItem = [];
-		Transactions.getResource().query(function (results) {
-			results.forEach(function (currentElement) {
-
-				// encapsulate into a row item
-				var item = self.encapsulateTransaction(currentElement);
-				resultItem.push(item);
-			});
+		Transactions.getResource().query().$promise
+		.then(function (results) {
+			$scope.items =  self.buildItemsList(results);
 		});
-
-		return resultItem;
 	}
 
+	/*
+	* Add/Remove the current item from the selected list
+	*/
+	self.updateSelectedList = function (item) {
+		if (item.selected) {
+			$scope.itemSelected.push(item);
+		} else {
+			// find index
+			var index = $scope.itemSelected.findIndex(function (currentElement) {
+				return currentElement.transaction._id == item.transaction._id;
+			});
 
-	// Load all transactions
-	$scope.items = self.loadTransactions();
+			// remove from items
+			if (index > -1) {
+				$scope.itemSelected.splice(index, 1);
+			}
+		}
+	}
 
 	// Load categories list
 	$scope.categories = Categories.getCategories();
@@ -58,18 +89,6 @@ transactionsController.controller('TransactionsCtrl', ['$scope', 'Transactions',
 	$scope.bankAccountTotal = BankAccount.getBankAccountTotal();
 
 	$scope.bankAccountTotalByCategory = BankAccount.getBankAccountTotalByCategory();
-
-	/**
-	* Create and return a new transaction object with default value
-	*/
-	self.initTransaction = function (){
-		var transaction = {
-			date: new Date(),
-			income:0,
-			outcome:0
-		};
-		return transaction;
-	}
 
 	/**
 	* As we don't want to save in our database GUI properties when saving a transaction, we encapsulate a transaction object into an item object
@@ -88,20 +107,6 @@ transactionsController.controller('TransactionsCtrl', ['$scope', 'Transactions',
 	}
 
 	/**
-	* Add a new transaction and persist it to database
-	* Then, encapsulate return from database into item object for adding it in item list
-	*/
-	self.addNewTransaction = function() {
-		var transaction = self.initTransaction();
-
-		Transactions.getResource().save(transaction).$promise
-		.then (function (result) {
-			var item = self.encapsulateTransaction(result);
-			$scope.items.push(item);
-		});		
-	};
-
-	/**
 	* Delete transactions selected by user
 	*/
 	self.deleteTransaction = function () {
@@ -113,7 +118,11 @@ transactionsController.controller('TransactionsCtrl', ['$scope', 'Transactions',
 
 				// find index
 				var index = $scope.items.findIndex(function (currentValue) {
-					return currentValue.transaction._id == currentId;
+					if (!currentValue.group) {
+						return currentValue.transaction._id == currentId;
+					} else {
+						return false;
+					}
 				});
 
 				// remove from items
