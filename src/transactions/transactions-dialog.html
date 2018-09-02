@@ -148,7 +148,7 @@
 				Done
 			</md-button>
 			<span flex="80"></span>
-			<md-button ng-click="ctrl.addDialog()">
+			<md-button ng-hide="mode == 'edit'" ng-click="ctrl.addDialog()">
 				Add
 			</md-button>
 		</md-dialog-actions>

@@ -16,18 +16,18 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "^1.6.5",
-    "angular-route": "^1.6.5",
-    "angular-resource": "^1.6.5",
+    "angular": "^1.7.3",
+    "angular-route": "^1.7.3",
+    "angular-resource": "^1.7.3",
     "angular-material": "^1.1.10",
     "angular-moment": "^1.2.0",
     "chart.js": "^2.7.0",
     "angular-chart.js": "^1.1.1"
   },
   "resolutions": {
-    "angular": "~1.6.5"
+    "angular": "~1.7.3"
   },
   "devDependencies": {
-    "angular-mocks": "^1.6.5"
+    "angular-mocks": "^1.7.3"
   }
 }
