@@ -9,13 +9,6 @@ transactionsController.controller('TransactionsCtrl', ['$scope', 'Transactions',
 	const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
 
 	/*
-	* Default configuration about sorting and pagination, used in md-datatable directive
-	*/
-	$scope.query = {
-		order: '-dateToDisplay', // default order
-	};
-
-	/*
 	* Init Variables
 	*/
 	$scope.items = [];
@@ -101,7 +94,8 @@ transactionsController.controller('TransactionsCtrl', ['$scope', 'Transactions',
 		var item = {
 			transaction: aTransaction,
 			dateToDisplay: new Date(aTransaction.date),
-			currentlySaving:false	
+			currentlySaving:false, 
+			showEdit:false	
 		};
 		return item;
 	}
@@ -142,35 +136,6 @@ transactionsController.controller('TransactionsCtrl', ['$scope', 'Transactions',
 			});
 			currentItem.currentlySaving = true;	
 		}
-	}
-
-	$scope.onChange = function (currentItem) {
-		//change item properties
-		currentItem.changed = true;
-	}
-
-	$scope.onFocus = function (currentItem) {
-
-		if (typeof $scope.lastItem == 'undefined') {
-			$scope.lastItem = currentItem;
-		}
-
-		// Compare currentItem with last modified item
-		if (currentItem.transaction._id != $scope.lastItem.transaction._id) {
-			// If both are different
-			//	 update changes of previous item (if changed)
-			//	 replace lastCurrentItem with current item
-			if ($scope.lastItem.changed) {
-				update($scope.lastItem);	
-			}
-
-			$scope.lastItem = currentItem;	
-
-		}
-	}
-
-	$scope.onBlur = function(currentItem) {
-		update(currentItem);
 	}
 
 	var originatorEv;
@@ -240,20 +205,19 @@ transactionsController.controller('TransactionsCtrl', ['$scope', 'Transactions',
 		});
 	};
 
-	self.addTransaction = function(ev) {
-
-		$mdDialog.show({
-			controller: 'TransactionsDialogCtrl',
-			templateUrl: '../transactions/transactions-dialog.html',
-			targetEvent: ev,
-			controllerAs: 'ctrl',
-			clickOutsideToClose:true,
-		})
+	/* Open a popup for adding a new transaction */
+	self.showEditTransactionDialog = function(mode, aTransaction) {
+		$mdDialog.show(
+			$mdDialog
+			.transactionDialog({
+				locals : {
+					transaction : aTransaction,
+					mode : mode
+				}
+			})
+		)
 		.then(function(bankAccountAdded) {
 			$scope.items = self.loadTransactions();
-		}, function() {
-			console.log('You cancelled the dialog.');
 		});
-
 	}
 }])

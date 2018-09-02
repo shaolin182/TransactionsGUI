@@ -2,15 +2,21 @@
 
 var transactionsDialogController = angular.module('transactionsDialogController', []);
 
-transactionsDialogController.controller('TransactionsDialogCtrl', ['$scope', '$mdDialog', 'Categories', 'BankAccount', 'Transactions', function ($scope, $mdDialog, Categories, BankAccount, Transactions) {
+transactionsDialogController.controller('TransactionsDialogCtrl', ['$scope', 'mode', 'transaction', '$mdDialog', 'Categories', 'BankAccount', 'Transactions', function ($scope, mode, transaction, $mdDialog, Categories, BankAccount, Transactions) {
 
 	var self = this;
+
+	$scope.mode = mode;
 
 	/**
 	* Init Transaction
 	*/
-	$scope.transaction = Transactions.initTransaction();
-
+	if ($scope.mode == 'edit') {
+		$scope.transaction = transaction;
+	} else {
+		$scope.transaction = Transactions.initTransaction();
+	}
+	
 	/**
 	* Contains sub transaction selected by user
 	*/
@@ -62,7 +68,6 @@ transactionsDialogController.controller('TransactionsDialogCtrl', ['$scope', '$m
 	* Remove selected item from list
 	*/
 	self.removeSubTransaction = function (subtransaction) {
-
 		$scope.subTransactionSelected.forEach(function (currentElement){
 			var index=$scope.transaction.subtransaction.indexOf(currentElement)
 			$scope.transaction.subtransaction.splice(index,1);
@@ -93,14 +98,12 @@ transactionsDialogController.controller('TransactionsDialogCtrl', ['$scope', '$m
      	.then (function (result) {
      		$scope.transaction = Transactions.reinitTransaction($scope.transaction);
      	});	
-
      }
 
      /**
      * Create or edit new transaction
      */ 
      self.okDialog = function() {
-
      	Transactions.getResource().save($scope.transaction).$promise
      	.then (function (result) {
      		$mdDialog.hide();

@@ -62,9 +62,27 @@ transactionsApp.config(function($mdDateLocaleProvider) {
 	};
 });
 
+/*
+* Configuring application theme
+*/ 
 transactionsApp.config(['$mdThemingProvider', function ($mdThemingProvider) {
-	
 	$mdThemingProvider.theme('default')
 	.primaryPalette('blue')
 	.accentPalette('pink');
+}]);
+
+/*
+ * Add some preset for $mdDialog
+ */
+transactionsApp.config(['$mdDialogProvider', function ($mdDialogProvider) {
+	$mdDialogProvider.addPreset('transactionDialog', {
+		options : function () {
+			return {
+				controller: 'TransactionsDialogCtrl',
+				templateUrl: './transactions/transactions-dialog.html',
+				controllerAs: 'ctrl',
+				clickOutsideToClose:true
+			};
+		}
+	});
 }]);
