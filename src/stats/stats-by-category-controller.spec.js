@@ -48,11 +48,13 @@ describe ("Unit Testing of controller StatsCategoryCtrl", function () {
 		mockStatFilter = sinon.stub({});
 		mockStatService = sinon.stub({
 			getStatByCategory : function (){},
-			getStatByCategoryOverMonth : function(){}
+			getStatByCategoryOverMonth : function(){},
+			getStatByCategoryOverYear : function(){}
 		})
 
 		mockStatService.getStatByCategory.returns(deferred.promise);
 		mockStatService.getStatByCategoryOverMonth.returns(deferred.promise);
+		mockStatService.getStatByCategoryOverYear.returns(deferred.promise);
 
 		controller = $controller('StatsCategoryCtrl', { $scope: $scope, Stats : mockStatService, StatsFilter : mockStatFilter });
 	}));
@@ -74,7 +76,7 @@ describe ("Unit Testing of controller StatsCategoryCtrl", function () {
 		deferred.resolve(['loadStatByCategory']);
 		$scope.$apply();
 		
-		assert.isOk(mockStatService.getStatByCategory.calledTwice, 'getStatByCategory function should be called when twice, once when module boots, once when function is called');
+		assert.isOk(mockStatService.getStatByCategory.calledThrice, 'getStatByCategory function should be called thrice, twice when module boots, once when function is called');
 		assert.equal($scope.costByCategory[0], 'loadStatByCategory');
 		assert.equal($scope.costByCategory.title, 'Dépenses par catégorie');
 		assert.equal($scope.costByCategory.type, 'pie');

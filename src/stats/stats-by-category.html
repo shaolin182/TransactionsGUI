@@ -7,15 +7,25 @@
 		</div>
 
 		<div layout="row">
-			<div flex="100" layout="column">
+			<div flex="50" layout="column">
 				<stats-chart-directive config="costByCategory"/>
-            </div>
+			</div>
+			<div flex="50" layout="column">
+				<stats-chart-directive config="costByCategoryBar" />
+			</div>
 		</div>
 		<div layout="row" >
 			<div flex="100" layout="column">
 				<stats-chart-directive config="costByCategoryOverMonth"/>
 			</div>
 		</div>
+		<div layout="row" >
+			
+			<div flex="100" layout="column">
+				<stats-chart-directive config="costByCategoryOverYear"/>
+			</div>
+		</div>
+		
 	</md-content>
 
 </div>
