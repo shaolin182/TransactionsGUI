@@ -12,15 +12,12 @@ services:
       - .:/usr/src/app/
   transactions:
     container_name: transactions-back-office
-    build:
-      context: ../Transactions/
-    restart: always
+    image: jugirard/transactions-backoffice-nodejs:0.1
     ports:
       - "8080:8080"
     links:
-      - mongo
-    volumes:
-      - ../Transactions/src:/usr/src/app/src  
+      - mongo 
+    env_file: ../Transactions/.env
   mongo:
     container_name: mongo-db
     image: mongo
