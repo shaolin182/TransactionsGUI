@@ -13,6 +13,7 @@ function statsService($resource) {
 			totalCostByYear : {method:'POST', params: {}, url:'http://localhost:8080/stats/totalCostByYear', isArray:true} ,
 			totalCostByCategory : {method:'POST', params: {}, url:'http://localhost:8080/stats/totalCostByCategory', isArray:true} ,
 			totalCostByCategoryAndMonth : {method:'POST', params: {}, url:'http://localhost:8080/stats/totalCostByCategoryAndMonth', isArray:true} ,
+			totalCostByCategoryAndYear : {method:'POST', params: {}, url:'http://localhost:8080/stats/totalCostByCategoryAndYear', isArray:true} ,
 			totalCostByAccountAndMonth : {method:'POST', params: {}, url:'http://localhost:8080/stats/totalCostByAccountAndMonth', isArray:true} ,
 		});
 	}
@@ -80,7 +81,20 @@ function statsService($resource) {
 			})
 			.catch (err => {reject(err);});
 		});
-	} 
+	}
+	
+	/**
+	* Apply filter sets by user and retrieve statistics by category over month
+	*/
+	statsService.getStatByCategoryOverYear = function (match) {
+		return new Promise(function (resolve, reject) {
+			return statsService.getResource().totalCostByCategoryAndYear(match).$promise
+			.then (function (results) {
+				resolve(transformStatsByCategoryOverYear(results));
+			})
+			.catch (err => {reject(err);});
+		});
+	}
 
 	/*
 	* Apply filter sets by user and retrieve statistics by account type
@@ -121,7 +135,28 @@ function statsService($resource) {
 		var response = {};
 
 		var resultFiltered = results.filter(function (currentElement) {
-			if (currentElement._id.category != "Revenu" && currentElement._id != null) {
+			if (currentElement._id.category != "Revenu" && currentElement._id.category != null) {
+				return true;
+			}
+		})
+
+		response.labels = statsService.extractDistinctInfoFromData(resultFiltered, statsService.getPeriod);
+		response.series = statsService.extractDistinctInfoFromData(resultFiltered, statsService.getFieldValueFromId, 'category');
+		resultFiltered.forEach(function (currentElement)  {
+			currentElement.total = statsService.convertCentToUnit(currentElement.total);
+			currentElement.total = statsService.convertToPositiveNumber(currentElement.total);
+		});
+		
+		response.data = statsService.convertResultToSeries(resultFiltered, 'category');
+
+		return response;
+	}
+
+	function transformStatsByCategoryOverYear (results) {
+		var response = {};
+
+		var resultFiltered = results.filter(function (currentElement) {
+			if (currentElement._id.category != "Revenu" && currentElement._id.category != null) {
 				return true;
 			}
 		})
