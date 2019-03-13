@@ -2,7 +2,7 @@ extends: google
 rules: 
   indent:
     - error
-    - tab
+    - 4
   no-tabs: 0
 parserOptions:
   ecmaVersion: 6

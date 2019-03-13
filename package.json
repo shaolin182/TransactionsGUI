@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "http-server -p 8000 -c-1 ./src",
+    "start": "http-server -p 8000 -c-1 ./dist",
     "test": "karma start",
     "lint": "./node_modules/eslint/bin/eslint.js -o /tmp/eslint.xml -f jslint-xml './src/**/*.js'; exit 0"
   },
@@ -15,9 +15,14 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "angular-mocks": "^1.7.7",
     "chai": "^4.2.0",
     "eslint": "^5.15.1",
     "eslint-config-google": "^0.12.0",
+    "gulp": "^4.0.0",
+    "gulp-clean": "^0.4.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-terser": "^1.1.7",
     "karma": "^4.0.1",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^2.1.0",
@@ -28,5 +33,15 @@
     "mocha": "^6.0.2",
     "sinon": "^7.2.7"
   },
-  "dependencies": {}
+  "dependencies": {
+    "angular": "^1.7.7",
+    "angular-animate": "^1.7.8",
+    "angular-aria": "^1.7.8",
+    "angular-chart.js": "^1.1.1",
+    "angular-material": "^1.1.13",
+    "angular-moment": "^1.3.0",
+    "angular-resource": "^1.7.7",
+    "angular-route": "^1.7.7",
+    "chart.js": "^2.7.3"
+  }
 }

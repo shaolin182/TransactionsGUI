@@ -6,13 +6,10 @@ WORKDIR /usr/src/app
 
 # Copy package.json file here in order to install dependencies
 COPY package*.json ./
-COPY *bower* ./
 
 # Install dependencies
 RUN npm install --only=prod
 RUN npm install http-server -g
-RUN npm install -g bower
-RUN bower install
 
 # Bundle app source
 COPY . .
