@@ -3,4 +3,14 @@ node_js:
   - "stable"
 before_script:
   - npm install -g gulp-cli
-script: gulp test
+
+jobs:
+  - stage: "Code Quality"
+    script: npm run-script lint
+
+  - stage: "Unit Test"
+    script: gulp test
+
+  - stage: "Code coverage" 
+
+  - stage: "Deploy"
