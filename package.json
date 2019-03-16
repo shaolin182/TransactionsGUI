@@ -6,7 +6,7 @@
   "scripts": {
     "start": "http-server -p 8000 -c-1 ./dist",
     "test": "gulp test",
-    "lint": "./node_modules/eslint/bin/eslint.js -o /tmp/eslint.xml -f jslint-xml './src/**/*.js'; exit 0"
+    "lint": "./node_modules/eslint/bin/eslint.js './src/**/*.js'"
   },
   "repository": {
     "type": "git",
