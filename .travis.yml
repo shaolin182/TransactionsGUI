@@ -8,7 +8,7 @@ jobs:
   - stage: "Code Quality"
     script: npm run-script lint
 
-  - stage: "Unit Test"
+  - stage: "test"
     script: gulp test
 
   - stage: "Code coverage" 
