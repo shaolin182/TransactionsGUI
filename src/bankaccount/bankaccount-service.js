@@ -1,48 +1,46 @@
 'use strict';
 
 function bankaccountService($resource) {
+    const bankaccountService = {};
 
-	var bankaccountService = {};
-
-	/**
+    /**
 	* Global variable that contains all bank account
-	*/ 
-	var bankAccount;
+	*/
+    let bankAccount;
 
-	bankaccountService.getResource = function () {
-		return $resource('http://localhost:8080/bankaccount', null, {
-			total: {method:'GET', url:'http://localhost:8080/bankaccount/total', isArray:true}, 
-			totalByCategory : {method:'GET', url:'http://localhost:8080/bankaccount/totalCategory', isArray:true}, 
-		});
-	}
+    bankaccountService.getResource = function() {
+        return $resource('http://localhost:8080/bankaccount', null, {
+            total: {method: 'GET', url: 'http://localhost:8080/bankaccount/total', isArray: true},
+            totalByCategory: {method: 'GET', url: 'http://localhost:8080/bankaccount/totalCategory', isArray: true},
+        });
+    };
 
-	bankaccountService.getBankAccount = function () {
-		if (bankAccount == undefined) {
-			bankAccount = bankaccountService.getResource().query(function () {
-				bankAccount.type = bankAccount.reduce(function (previous, current) {
-					if (previous.indexOf(current.category) === -1) {
-						previous.push(current.category);
-					}
-					return previous
-				}, []);
-			});
-		}
+    bankaccountService.getBankAccount = function() {
+        if (bankAccount == undefined) {
+            bankAccount = bankaccountService.getResource().query(function() {
+                bankAccount.type = bankAccount.reduce(function(previous, current) {
+                    if (previous.indexOf(current.category) === -1) {
+                        previous.push(current.category);
+                    }
+                    return previous;
+                }, []);
+            });
+        }
 
-		return bankAccount;
-	}
+        return bankAccount;
+    };
 
-	bankaccountService.getBankAccountTotal = function () {
-		return bankaccountService.getResource().total();
-	}
+    bankaccountService.getBankAccountTotal = function() {
+        return bankaccountService.getResource().total();
+    };
 
-	bankaccountService.getBankAccountTotalByCategory = function () {
-		return bankaccountService.getResource().totalByCategory();
-	}
+    bankaccountService.getBankAccountTotalByCategory = function() {
+        return bankaccountService.getResource().totalByCategory();
+    };
 
-	return bankaccountService;
-
+    return bankaccountService;
 }
 
 angular
-.module('bankaccountServiceModule', ['ngResource'])
-.factory('BankAccount', ['$resource', bankaccountService]);
+    .module('bankaccountServiceModule', ['ngResource'])
+    .factory('BankAccount', ['$resource', bankaccountService]);
