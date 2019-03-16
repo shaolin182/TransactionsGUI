@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "http-server -p 8000 -c-1 ./dist",
-    "test": "karma start",
+    "test": "gulp test",
     "lint": "./node_modules/eslint/bin/eslint.js -o /tmp/eslint.xml -f jslint-xml './src/**/*.js'; exit 0"
   },
   "repository": {
