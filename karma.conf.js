@@ -17,22 +17,30 @@ module.exports = function(config) {
         },
 
         coverageReporter: {
-            type: 'cobertura',
-            dir: '/tmp/coverage/',
-            subdir: '.',
-            file: 'coverage.xml',
+            type: 'text',
+            check: {
+                global: {
+                    statements: 30,
+                    branches: 30,
+                    functions: 30,
+                    lines: 30,
+                    excludes: [
+                        'src/**/*spec.js',
+                    ],
+                },
+            },
         },
 
-        junitReporter: {
-            outputDir: '/tmp',
-            outputFile: 'unittest.xml',
-            useBrowserName: false,
-        },
+        // junitReporter: {
+        //     outputDir: '/tmp',
+        //     outputFile: 'unittest.xml',
+        //     useBrowserName: false,
+        // },
 
         // test results reporter to use
         // possible values: 'dots', 'progress'
         // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-        reporters: ['progress', 'junit', 'coverage'],
+        reporters: ['mocha', 'coverage'],
 
         // web server port
         port: 9876,
