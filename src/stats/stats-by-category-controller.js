@@ -1,7 +1,7 @@
 'use strict';
 
-var statsController = angular.module('statsCategoryController', []);
-statsController.controller('StatsCategoryCtrl', ['$scope', 'Stats', 'StatsFilter', '$timeout', function($scope, Stats, StatsFilter, $timeout) {
+const statsCategoryController = angular.module('statsCategoryController', []);
+statsCategoryController.controller('StatsCategoryCtrl', ['$scope', 'Stats', 'StatsFilter', '$timeout', function($scope, Stats, StatsFilter, $timeout) {
     const self = this;
 
     /**

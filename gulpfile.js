@@ -28,9 +28,7 @@ const paths = {
         'node_modules/chart.js/dist/Chart.js',
         'node_modules/angular-chart.js/dist/angular-chart.js',
     ],
-    libTest: [
-        'node_modules/angular-mocks/angular-mocks.js',
-    ],
+    libTest: 'node_modules/angular-mocks/angular-mocks.js',
 
     dist: 'dist',
     dist_lib: 'dist/lib',

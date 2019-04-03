@@ -1,12 +1,17 @@
 language: node_js
 node_js: 
   - "stable"
+
+services:
+  - docker
+  
 before_script:
   - npm install -g gulp-cli
 
 stages:
   - lint
   - test
+  - build
   - deploy
 
 jobs:
@@ -17,7 +22,5 @@ jobs:
   - stage: test
     script: gulp test
 
-  - stage: build
-    script: gulp build
-
   - stage: deploy
+    script: bash publish_image.sh

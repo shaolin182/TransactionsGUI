@@ -1,11 +1,16 @@
 'use strict';
 
+/**
+ * 
+ * @param {} $resource 
+ */
 function statsService($resource) {
     const statsService = {};
 
     /**
-	* Init resource module for accessing server
-	*/
+     * Init resource module for accessing server
+     * @return {Object} Return an object used to interact with backend server
+     */
     statsService.getResource = function() {
         return $resource('http://localhost:8080/stats', null, {
             totalCostByMonth: {method: 'POST', params: {}, url: 'http://localhost:8080/stats/totalCostByMonth', isArray: true},
